@@ -21,4 +21,4 @@ cache:
     - $HOME/.m2
 
 script:
-  - mvn -f gestionale/pom.xml clean verify
+  - mvn -f com.project.apt.gestionale/pom.xml clean verify
