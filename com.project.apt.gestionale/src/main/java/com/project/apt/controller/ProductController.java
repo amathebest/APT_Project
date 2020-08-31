@@ -41,10 +41,22 @@ public class ProductController {
 	}
 	
 	public void updateProductName(Product product, String newName) {
-		
+		Product existingProduct = productRepository.findByName(product.getName());
+		if (existingProduct == null) {
+			productView.showError("No such product existing in the database.", product, "error");
+			return;
+		}
+		productRepository.alterProductName(product, newName);
+		productView.productEdited(product);
 	}
 	
 	public void updateProductQuantity(Product product, int newQuantity) {
-		
+		Product existingProduct = productRepository.findByName(product.getName());
+		if (existingProduct == null) {
+			productView.showError("No such product existing in the database.", product, "error");
+			return;
+		}
+		productRepository.alterProductQuantity(product, newQuantity);
+		productView.productEdited(product);
 	}
 }

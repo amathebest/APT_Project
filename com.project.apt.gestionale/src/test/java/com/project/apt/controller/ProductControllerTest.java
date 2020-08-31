@@ -23,6 +23,7 @@ import com.project.apt.view.ProductView;
 
 public class ProductControllerTest {
 	private static final String testProductName1 = "test1";
+	private static final String testProductName2 = "test2";
 	private static final int testProductQuantity1 = 10;
 	private static final int testProductQuantity2 = 5;
 	
@@ -98,4 +99,46 @@ public class ProductControllerTest {
 		productController.removeProduct(productToRemove);
 		verify(productView).showError("No such product existing in the database.", productToRemove, "error");
 	}
+	
+	@Test
+	public void testUpdateProductNameWhenProductIsPresent() {
+		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
+		when(productRepository.findByName(testProductName1)).thenReturn(productToUpdate);
+		productController.updateProductName(productToUpdate, testProductName2);
+		InOrder inOrder = inOrder(productRepository, productView);
+		inOrder.verify(productRepository).alterProductName(productToUpdate, testProductName2);
+		inOrder.verify(productView).productEdited(productToUpdate);
+	}
+	
+	@Test
+	public void testUpdateProductNameWhenProductIsNotPresent() {
+		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
+		when(productRepository.findByName(testProductName1)).thenReturn(null);
+		productController.updateProductName(productToUpdate, testProductName2);
+		verify(productView).showError("No such product existing in the database.", productToUpdate, "error");
+	}
+	
+	@Test
+	public void testUpdateProductQuantityWhenProductIsPresent() {
+		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
+		when(productRepository.findByName(testProductName1)).thenReturn(productToUpdate);
+		productController.updateProductQuantity(productToUpdate, testProductQuantity2);
+		InOrder inOrder = inOrder(productRepository, productView);
+		inOrder.verify(productRepository).alterProductQuantity(productToUpdate, testProductQuantity2);
+		inOrder.verify(productView).productEdited(productToUpdate);
+	}
+	
+	@Test
+	public void testUpdateProductQuantityWhenProductIsNotPresent() {
+		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
+		when(productRepository.findByName(testProductName1)).thenReturn(null);
+		productController.updateProductQuantity(productToUpdate, testProductQuantity2);
+		verify(productView).showError("No such product existing in the database.", productToUpdate, "error");
+	}
+	
+	
+	
+	
+	
+	
 }
