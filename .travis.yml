@@ -11,14 +11,15 @@ services:
 addons:
   sonarcloud:
     organization: "amathebest"
-	token:
-	  secure: $SONAR_TOKEN
+    token:
+      secure: $SONAR_TOKEN
 
 install: true
 
 cache:
   directories:
     - $HOME/.m2
+    - $HOME/.sonar/cache
 
 script:
   - mvn -f com.project.apt.gestionale/pom.xml clean verify
