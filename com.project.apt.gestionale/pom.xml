@@ -15,7 +15,8 @@
 		
 		<!-- Depdendencies versions -->
 		<junit.version>4.11</junit.version>
-		
+	    <assertj.swing.version>3.9.2</assertj.swing.version>
+	    <mockito.version>3.3.3</mockito.version>
 		
 		<!-- Plugins versions -->
 		<jacoco.version>0.8.4</jacoco.version>
@@ -40,8 +41,23 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-		   
-	  
+		
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-swing-junit</artifactId>
+			<version>${assertj.swing.version}</version>
+			<scope>test</scope>
+    	</dependency>
+	  	
+	  	<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+    	</dependency>
+    	
+    	
+    	
 	</dependencies>
 
 	<build>
