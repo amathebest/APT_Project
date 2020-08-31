@@ -6,6 +6,8 @@ import com.project.apt.view.ProductView;
 
 public class ProductController {
 	
+	private static final String noProductFound = "No such product existing in the database.";
+	
 	private ProductView productView;
 	private ProductRepository productRepository;
 	
@@ -33,7 +35,7 @@ public class ProductController {
 	public void removeProduct(Product product) {
 		Product existingProduct = productRepository.findByName(product.getName());
 		if (existingProduct == null) {
-			productView.showError("No such product existing in the database.", product, "error");
+			productView.showError(noProductFound, product, "error");
 			return;
 		}
 		productRepository.removeProduct(product);
@@ -43,7 +45,7 @@ public class ProductController {
 	public void updateProductName(Product product, String newName) {
 		Product existingProduct = productRepository.findByName(product.getName());
 		if (existingProduct == null) {
-			productView.showError("No such product existing in the database.", product, "error");
+			productView.showError(noProductFound, product, "error");
 			return;
 		}
 		productRepository.alterProductName(product, newName);
@@ -53,7 +55,7 @@ public class ProductController {
 	public void updateProductQuantity(Product product, int newQuantity) {
 		Product existingProduct = productRepository.findByName(product.getName());
 		if (existingProduct == null) {
-			productView.showError("No such product existing in the database.", product, "error");
+			productView.showError(noProductFound, product, "error");
 			return;
 		}
 		productRepository.alterProductQuantity(product, newQuantity);

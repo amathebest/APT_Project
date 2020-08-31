@@ -7,7 +7,6 @@ import org.bson.Document;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.project.apt.model.Product;
-import com.project.apt.repository.ProductRepository;
 
 public class ProductRepositoryMongo implements ProductRepository {
 

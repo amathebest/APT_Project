@@ -26,6 +26,7 @@ public class ProductControllerTest {
 	private static final String testProductName2 = "test2";
 	private static final int testProductQuantity1 = 10;
 	private static final int testProductQuantity2 = 5;
+	public static final String noProductFound = "No such product existing in the database.";
 	
 	@Mock
 	private ProductRepository productRepository;
@@ -97,7 +98,7 @@ public class ProductControllerTest {
 		Product productToRemove = new Product(testProductName1, testProductQuantity1);
 		when(productRepository.findByName(testProductName1)).thenReturn(null);
 		productController.removeProduct(productToRemove);
-		verify(productView).showError("No such product existing in the database.", productToRemove, "error");
+		verify(productView).showError(noProductFound, productToRemove, "error");
 	}
 	
 	@Test
@@ -115,7 +116,7 @@ public class ProductControllerTest {
 		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
 		when(productRepository.findByName(testProductName1)).thenReturn(null);
 		productController.updateProductName(productToUpdate, testProductName2);
-		verify(productView).showError("No such product existing in the database.", productToUpdate, "error");
+		verify(productView).showError(noProductFound, productToUpdate, "error");
 	}
 	
 	@Test
@@ -133,6 +134,6 @@ public class ProductControllerTest {
 		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
 		when(productRepository.findByName(testProductName1)).thenReturn(null);
 		productController.updateProductQuantity(productToUpdate, testProductQuantity2);
-		verify(productView).showError("No such product existing in the database.", productToUpdate, "error");
+		verify(productView).showError(noProductFound, productToUpdate, "error");
 	}
 }
