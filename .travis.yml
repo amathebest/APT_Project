@@ -1,0 +1,24 @@
+language: java
+
+dist: xenial
+
+jdk: openjdk8
+
+services:
+  - docker
+  - xvfb
+
+addons:
+  sonarcloud:
+    organization: "amathebest"
+	token:
+	  secure: $SONAR_TOKEN
+
+install: true
+
+cache:
+  directories:
+    - $HOME/.m2
+
+script:
+  - mvn -f gestionale/pom.xml clean verify
