@@ -10,9 +10,9 @@ services:
 
 addons:
   sonarcloud:
-    organization: "amathebest"
+    organization: "amathebest-github"
     token:
-      secure: $SONAR_TOKEN
+      secure: "7355db91ee97013661a862b27a5047107c6a8d5f"
 
 install: true
 
