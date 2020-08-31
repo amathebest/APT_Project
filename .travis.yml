@@ -11,8 +11,7 @@ services:
 addons:
   sonarcloud:
     organization: "amathebest-github"
-    token:
-      secure: FxIPR7kpKClBCGMPI5UxNIUdCk+nJZQ+woQZzzNdf3VckZyxKqntarxOmMHdih3Eowr8TQfK2p4Y3MWPh/FMjyjNHbDjw2JsFFy8L0KG9HenVRUQWA0X2oWWLjzayL8/lr5UcVysf5+NF4AqrtsxY/GWAKBOS0B2f7rtN14vgVgLUmhLaf315sGzROvbuc/T3lKI2clDtHCAOYg+oPXMjU+y/gjS/IvIUgHwoRMNzNKdJonfiSkYWYj9EgagLnB4tgoC75XXiBF/MwlJezWnYXOQCIu7mtJiJG5yUgrYoNXWxMvJHA3A8jTqzr7XN7wrtjoij7XiGU5oaiM2hMnih8Idg15gyrrh5CL6N1v0pGhCnwL6O+KSDDDySaSri0RqKboA9yIyeumS/YPXzOrBlayDyJxdwojB/WWjcfivEKcNYng5mvLrXD2ZA0v/SpPtA1UhmuWukMpE3yc+JerC7Kn0dUjsTwJf95XG5qt/Q9piJ/+GDaeJBLf/yvLQ0Z59e4WTFmmwtRPi3ykiZ8t3Ozkkg/H67fXypiSV6Gm98HhbUQNAtCV8peNyi8HvHD8woqjqXJUZjYfNbOVwFxruFtT7VLVyn4izvg0RejIR6BRJ4lbajbm5NRqXmpCGIu3w1FY0oTLvHTC/Yvj81dok0PYSTlbdPr+mrVh1W7P2004=
+    token: ${SONAR_TOKEN}
 
 install: true
 
