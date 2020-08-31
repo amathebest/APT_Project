@@ -22,4 +22,4 @@ cache:
     - $HOME/.sonar/cache
 
 script:
-  - mvn -f com.project.apt.gestionale/pom.xml clean verify
+  - mvn -f com.project.apt.gestionale/pom.xml clean verify -Pjacoco sonar:sonar
