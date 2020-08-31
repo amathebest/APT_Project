@@ -58,4 +58,53 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>jacoco</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+				
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>${jacoco.version}</version>
+						<configuration>
+							<excludes>
+								<exclude>**/model/*</exclude>
+								<exclude>**/SchoolSwingApp.*</exclude>
+							</excludes>
+							<!-- Don't use the default property so that we'll do code 
+							coverage only for surefire tests (not for failsafe) -->
+							<propertyName>surefireArgLine</propertyName>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<!-- binds by default to the phase "initialize" -->
+									<goal>prepare-agent</goal>
+									<!-- binds by default to the phase "verify" -->
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${surefire.version}</version>
+						<configuration>
+							<!-- Code coverage for surefire tests -->
+							<argLine>${surefireArgLine}</argLine>
+						</configuration>
+					</plugin>
+					
+				</plugins>
+			</build>
+		</profile>
+  	</profiles>
 </project>
