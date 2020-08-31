@@ -79,4 +79,23 @@ public class ProductControllerTest {
 		inOrder.verify(productView).productEdited(existingProduct);
 		inOrder.verify(productView).showError("Product already present, updating quantity instead.", existingProduct, "info");
 	}
+	
+	@Test
+	public void testRemoveProductWhenProductIsPresent() {
+		Product existingProduct = new Product(testProductName1, testProductQuantity1);
+		Product productToRemove = new Product(testProductName1, testProductQuantity2);
+		when(productRepository.findByName(testProductName1)).thenReturn(existingProduct);
+		productController.removeProduct(productToRemove);
+		InOrder inOrder = inOrder(productRepository, productView);
+		inOrder.verify(productRepository).removeProduct(productToRemove);
+		inOrder.verify(productView).productDeleted(productToRemove);
+	}
+	
+	@Test
+	public void testRemoveProductWhenProductIsNotPresent() {
+		Product productToRemove = new Product(testProductName1, testProductQuantity1);
+		when(productRepository.findByName(testProductName1)).thenReturn(null);
+		productController.removeProduct(productToRemove);
+		verify(productView).showError("No such product existing in the database.", productToRemove, "error");
+	}
 }

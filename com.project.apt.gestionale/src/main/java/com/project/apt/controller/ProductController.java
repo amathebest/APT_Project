@@ -31,7 +31,13 @@ public class ProductController {
 	}
 	
 	public void removeProduct(Product product) {
-		
+		Product existingProduct = productRepository.findByName(product.getName());
+		if (existingProduct == null) {
+			productView.showError("No such product existing in the database.", product, "error");
+			return;
+		}
+		productRepository.removeProduct(product);
+		productView.productDeleted(product);
 	}
 	
 	public void updateProductName(Product product, String newName) {

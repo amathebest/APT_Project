@@ -27,6 +27,10 @@
       		${project.reporting.outputDirectory}/jacoco/jacoco.xml
     	</sonar.coverage.jacoco.xmlReportPaths>
     	
+    	<sonar.coverage.exclusions>
+			**/model/*
+    	</sonar.coverage.exclusions>
+    	
     	<sonar.junit.reportPaths>
 			${project.build.directory}/surefire-reports,
 			${project.build.directory}/failsafe-reports
