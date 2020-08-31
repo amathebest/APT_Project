@@ -6,4 +6,4 @@ This repository will hold the project for the course Advanced Programming Techni
 Badges:
 
 
-[![Build Status](https://travis-ci.org/amathebest/apt_project.svg?branch=master)](https://travis-ci.org/amathebest/apt_project)
+[![Build Status](https://travis-ci.org/amathebest/APT_Project.svg?branch=master)](https://travis-ci.org/amathebest/APT_Project)
