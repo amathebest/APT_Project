@@ -25,6 +25,11 @@
 		<sonar.coverage.jacoco.xmlReportPaths>
       		${project.reporting.outputDirectory}/jacoco/jacoco.xml
     	</sonar.coverage.jacoco.xmlReportPaths>
+    	
+    	<sonar.junit.reportPaths>
+			${project.build.directory}/surefire-reports,
+			${project.build.directory}/failsafe-reports
+	    </sonar.junit.reportPaths>
 	</properties>
 
 	<dependencies>
@@ -42,6 +47,28 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+			
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>${build.helper.version}</version>
+					<executions>
+						<execution>
+							<id>add-test-source</id>
+							<phase>generate-test-sources</phase>
+							<goals>
+								<goal>add-test-source</goal>
+							</goals>
+							<configuration>
+								<sources>
+									<source>src/it/java</source>
+								</sources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				
+				
 			
 				<plugin>
 					<groupId>org.jacoco</groupId>
