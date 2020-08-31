@@ -135,10 +135,4 @@ public class ProductControllerTest {
 		productController.updateProductQuantity(productToUpdate, testProductQuantity2);
 		verify(productView).showError("No such product existing in the database.", productToUpdate, "error");
 	}
-	
-	
-	
-	
-	
-	
 }
