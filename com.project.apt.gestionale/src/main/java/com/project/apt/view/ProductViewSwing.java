@@ -9,6 +9,8 @@ import com.project.apt.model.Product;
 public class ProductViewSwing extends JFrame implements ProductView {
 	
 	private static final long serialVersionUID = 1L;
+	
+	
 
 	@Override
 	public void listProducts(List<Product> products) {

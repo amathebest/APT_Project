@@ -45,8 +45,6 @@ public class ProductController {
 	public void updateProductName(Product product, String newName) {
 		Product existingProductOldName = productRepository.findByName(product.getName());
 		Product existingProductNewName = productRepository.findByName(newName);
-		System.out.println(existingProductOldName);
-		System.out.println(existingProductNewName);
 		if (existingProductOldName != null) {
 			if (existingProductNewName == null) {
 				productRepository.alterProductName(product, newName);
