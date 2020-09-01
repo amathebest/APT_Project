@@ -1,5 +1,7 @@
 package com.project.apt.repository;
 
+import static org.assertj.core.api.Assertions.*;
+
 import java.net.InetSocketAddress;
 
 import org.bson.Document;
@@ -13,11 +15,17 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.project.apt.model.Product;
 
 import de.bwaldvogel.mongo.MongoServer;
 import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 
 public class ProductRepositoryMongoTest {
+	
+	private static final String testProductName1 = "test1";
+	private static final String testProductName2 = "test2";
+	private static final int testProductQuantity1 = 10;
+	private static final int testProductQuantity2 = 5;
 
 	private static MongoServer server;
 	private static InetSocketAddress serverAddress;
@@ -56,8 +64,38 @@ public class ProductRepositoryMongoTest {
 	}
 	
 	@Test
-	public void test() {
-		
+	public void testFindAllWhenDBIsEmptyReturnsAnEmptyList() {
+		assertThat(productRepository.findAllProducts()).isEmpty();
 	}
-
+	
+	@Test
+	public void testFindAllWhenDBIsNotEmptyReturnsAListOfTheProducts() {
+		productDocCollection.insertOne(new Document().append("name", testProductName1).append("quantity", testProductQuantity1));
+		productDocCollection.insertOne(new Document().append("name", testProductName2).append("quantity", testProductQuantity2));
+		Product firstProduct = new Product(testProductName1, testProductQuantity1);
+		Product secondProduct = new Product(testProductName2, testProductQuantity2);
+		assertThat(productRepository.findAllProducts()).containsExactly(firstProduct, secondProduct);
+	}
+	
+	@Test
+	public void testFindByNameWhenNoProductWithSpecifiedNameIsFound() {
+		assertThat(productRepository.findByName(testProductName1)).isNull();
+	}
+	
+	@Test
+	public void testFindByNameWhenProductWithSpecifiedNameExistsInDB() {
+		productDocCollection.insertOne(new Document().append("name", testProductName1).append("quantity", testProductQuantity1));
+		Product existingProduct = new Product(testProductName1, testProductQuantity1);
+		assertThat(productRepository.findByName(testProductName1)).isEqualTo(existingProduct);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

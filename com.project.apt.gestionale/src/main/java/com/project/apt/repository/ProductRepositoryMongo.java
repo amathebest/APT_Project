@@ -1,11 +1,15 @@
 package com.project.apt.repository;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import com.project.apt.model.Product;
 
 public class ProductRepositoryMongo implements ProductRepository {
@@ -18,14 +22,16 @@ public class ProductRepositoryMongo implements ProductRepository {
 
 	@Override
 	public List<Product> findAllProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		return StreamSupport.stream(productDocCollection.find().spliterator(), false).map(this::fromDocumentToProduct).collect(Collectors.toList());
 	}
 
 	@Override
 	public Product findByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Document productDoc = productDocCollection.find(Filters.eq("name", name)).first();
+		if (productDoc == null) {
+			return null;
+		}
+		return fromDocumentToProduct(productDoc);
 	}
 
 	@Override
@@ -50,6 +56,10 @@ public class ProductRepositoryMongo implements ProductRepository {
 	public void alterProductQuantity(Product product, int newQuantity) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private Product fromDocumentToProduct(Document d) {
+		return new Product("" + d.get("name"), (int) d.get("quantity"));
 	}
 
 }
