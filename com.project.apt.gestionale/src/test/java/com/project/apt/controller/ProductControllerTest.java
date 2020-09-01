@@ -123,6 +123,7 @@ public class ProductControllerTest {
 	public void testUpdateProductNameWhenProductWithSameNameAsTheNewOneIsPresent() {
 		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
 		Product existingProduct = new Product(testProductName2, testProductQuantity2);
+		when(productRepository.findByName(testProductName1)).thenReturn(productToUpdate);
 		when(productRepository.findByName(testProductName2)).thenReturn(existingProduct);
 		productController.updateProductName(productToUpdate, testProductName2);
 		verify(productView).showError("Database contains already a product with selected name", productToUpdate, "error");

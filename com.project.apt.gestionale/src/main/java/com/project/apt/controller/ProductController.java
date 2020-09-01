@@ -45,12 +45,14 @@ public class ProductController {
 	public void updateProductName(Product product, String newName) {
 		Product existingProductOldName = productRepository.findByName(product.getName());
 		Product existingProductNewName = productRepository.findByName(newName);
-		if (existingProductOldName != null && existingProductNewName == null) {
-			productRepository.alterProductName(product, newName);
-			productView.productEdited(product);
-			return;
-		}
-		if (existingProductNewName != null && existingProductNewName != null) {
+		System.out.println(existingProductOldName);
+		System.out.println(existingProductNewName);
+		if (existingProductOldName != null) {
+			if (existingProductNewName == null) {
+				productRepository.alterProductName(product, newName);
+				productView.productEdited(product);
+				return;
+			}
 			productView.showError("Database contains already a product with selected name", product, "error");
 			return;
 		}
