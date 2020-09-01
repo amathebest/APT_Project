@@ -1,6 +1,5 @@
 package com.project.apt.repository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -47,14 +46,16 @@ public class ProductRepositoryMongo implements ProductRepository {
 
 	@Override
 	public void alterProductName(Product product, String newName) {
-		// TODO Auto-generated method stub
-		
+		Document docToUpdate = new Document().append("name", product.getName()).append("quantity", product.getQuantity());
+		Document docToReplace = new Document().append("name", newName).append("quantity", product.getQuantity());
+		productDocCollection.replaceOne(docToUpdate, docToReplace);
 	}
 
 	@Override
 	public void alterProductQuantity(Product product, int newQuantity) {
-		// TODO Auto-generated method stub
-		
+		Document docToUpdate = new Document().append("name", product.getName()).append("quantity", product.getQuantity());
+		Document docToReplace = new Document().append("name", product.getName()).append("quantity", newQuantity);
+		productDocCollection.replaceOne(docToUpdate, docToReplace);
 	}
 	
 	private Product fromDocumentToProduct(Document d) {

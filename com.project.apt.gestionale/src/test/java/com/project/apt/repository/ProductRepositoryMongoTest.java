@@ -108,9 +108,9 @@ public class ProductRepositoryMongoTest {
 		Product secondProduct = new Product(testProductName2, testProductQuantity2);
 		productRepository.removeProduct(secondProduct);
 		assertThat(productDocCollection.find()).hasSize(1).allMatch(
-				d ->
-				d.get("name").equals(firstProduct.getName()) &&
-				d.get("quantity").equals(firstProduct.getQuantity())
+			d ->
+			d.get("name").equals(firstProduct.getName()) &&
+			d.get("quantity").equals(firstProduct.getQuantity())
 		);
 	}
 	
@@ -120,9 +120,20 @@ public class ProductRepositoryMongoTest {
 		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
 		productRepository.alterProductName(productToUpdate, testProductName2);
 		assertThat(productDocCollection.find()).hasSize(1).allMatch(
-				d ->
-				d.get("name").equals(productToUpdate.getName()) &&
-				d.get("quantity").equals(productToUpdate.getQuantity())
+			d ->
+			d.get("name").equals(testProductName2) &&
+			d.get("quantity").equals(productToUpdate.getQuantity())
+		);	
+	}
+	
+	public void testAlterProductQuantityShouldChangeProductQuantity() {
+		productDocCollection.insertOne(new Document().append("name", testProductName1).append("quantity", testProductQuantity1));
+		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
+		productRepository.alterProductQuantity(productToUpdate, testProductQuantity2);
+		assertThat(productDocCollection.find()).hasSize(1).allMatch(
+			d ->
+			d.get("name").equals(productToUpdate.getName()) &&
+			d.get("quantity").equals(testProductQuantity2)
 		);	
 	}
 	
