@@ -21,36 +21,37 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
+	private JPanel contentPane_1;
 	
-	private ProductController productController;
+	private transient ProductController productController;
 	
 	public void setProductController(ProductController productController) {
 		this.productController = productController;
 	}
 	
 	public ProductViewSwing() {
-		setTitle("Product View");
+		setTitle("Product Manager");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 400);
 		contentPane = new JPanel();
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		contentPane_1 = new JPanel();
+		contentPane_1.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane_1);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		contentPane.setLayout(gridBagLayout);
+		contentPane_1.setLayout(gridBagLayout);
 		
-		JLabel lblProductManager = new JLabel("Product Manager");
-		lblProductManager.setName("productManagerLabel");
-		GridBagConstraints gbc_lblProductManager = new GridBagConstraints();
-		gbc_lblProductManager.insets = new Insets(0, 0, 0, 5);
-		gbc_lblProductManager.gridx = 6;
-		gbc_lblProductManager.gridy = 0;
-		contentPane.add(lblProductManager, gbc_lblProductManager);
+		JLabel lblProductList = new JLabel("Product List");
+		lblProductList.setName("productListLabel");
+		GridBagConstraints gbc_lblProductList = new GridBagConstraints();
+		gbc_lblProductList.insets = new Insets(0, 0, 0, 5);
+		gbc_lblProductList.gridx = 0;
+		gbc_lblProductList.gridy = 0;
+		contentPane_1.add(lblProductList, gbc_lblProductList);
 		
 	}
 
