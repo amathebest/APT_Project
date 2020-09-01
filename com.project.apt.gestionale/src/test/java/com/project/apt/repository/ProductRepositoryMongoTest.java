@@ -89,9 +89,42 @@ public class ProductRepositoryMongoTest {
 		assertThat(productRepository.findByName(testProductName1)).isEqualTo(existingProduct);
 	}
 	
+	@Test
+	public void testAddProductShouldCreateNewDocument() {
+		Product productToSave = new Product(testProductName1, testProductQuantity1);
+		productRepository.addProduct(productToSave);
+		assertThat(productDocCollection.find()).hasSize(1).allMatch(
+			d ->
+			d.get("name").equals(productToSave.getName()) &&
+			d.get("quantity").equals(productToSave.getQuantity())
+		);
+	}
 	
+	@Test
+	public void testRemoveProductShouldRemoveProduct() {
+		productDocCollection.insertOne(new Document().append("name", testProductName1).append("quantity", testProductQuantity1));
+		productDocCollection.insertOne(new Document().append("name", testProductName2).append("quantity", testProductQuantity2));
+		Product firstProduct = new Product(testProductName1, testProductQuantity1);
+		Product secondProduct = new Product(testProductName2, testProductQuantity2);
+		productRepository.removeProduct(secondProduct);
+		assertThat(productDocCollection.find()).hasSize(1).allMatch(
+				d ->
+				d.get("name").equals(firstProduct.getName()) &&
+				d.get("quantity").equals(firstProduct.getQuantity())
+		);
+	}
 	
-	
+	@Test
+	public void testAlterProductNameShouldChangeProductsName() {
+		productDocCollection.insertOne(new Document().append("name", testProductName1).append("quantity", testProductQuantity1));
+		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
+		productRepository.alterProductName(productToUpdate, testProductName2);
+		assertThat(productDocCollection.find()).hasSize(1).allMatch(
+				d ->
+				d.get("name").equals(productToUpdate.getName()) &&
+				d.get("quantity").equals(productToUpdate.getQuantity())
+		);	
+	}
 	
 	
 	

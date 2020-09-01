@@ -36,13 +36,12 @@ public class ProductRepositoryMongo implements ProductRepository {
 
 	@Override
 	public void addProduct(Product product) {
-		// TODO Auto-generated method stub
-		
+		productDocCollection.insertOne(new Document().append("name", product.getName()).append("quantity", product.getQuantity()));
 	}
 
 	@Override
 	public void removeProduct(Product product) {
-		// TODO Auto-generated method stub
+		productDocCollection.deleteOne(Filters.eq("name", product.getName()));
 		
 	}
 
