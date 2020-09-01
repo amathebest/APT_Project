@@ -27,10 +27,10 @@ public class ProductRepositoryMongo implements ProductRepository {
 	@Override
 	public Product findByName(String name) {
 		Document productDoc = productDocCollection.find(Filters.eq("name", name)).first();
-		if (productDoc == null) {
-			return null;
+		if (productDoc != null) {
+			return fromDocumentToProduct(productDoc);
 		}
-		return fromDocumentToProduct(productDoc);
+		return null;
 	}
 
 	@Override
