@@ -7,23 +7,34 @@ import javax.swing.JFrame;
 import com.project.apt.controller.ProductController;
 import com.project.apt.model.Product;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import java.awt.Insets;
+
+import javax.swing.DefaultListModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JSplitPane;
 
 public class ProductViewSwing extends JFrame implements ProductView {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel contentPane;
-	private JPanel contentPane_1;
-	
 	private transient ProductController productController;
+
+	private JList<Product> listProduct;
+	private DefaultListModel<Product> listProductModel;
 	
 	public void setProductController(ProductController productController) {
 		this.productController = productController;
@@ -33,26 +44,74 @@ public class ProductViewSwing extends JFrame implements ProductView {
 		setTitle("Product Manager");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 400);
-		contentPane = new JPanel();
-		contentPane_1 = new JPanel();
-		contentPane_1.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane_1);
+		setLayout(new BorderLayout());
 		
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		contentPane_1.setLayout(gridBagLayout);
+		JPanel mainContent = new JPanel();
+		mainContent.setLayout(new GridLayout(0, 2));
+		mainContent.add(createLeftPanel());
+		mainContent.add(createRightPanel());
+		add(mainContent);
+
+		pack();
+        setVisible(true);
 		
-		JLabel lblProductList = new JLabel("Product List");
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+	protected JPanel createLeftPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JPanel content = new JPanel(new GridBagLayout());
+        JPanel left = new JPanel(new GridLayout(0, 2));
+        
+        GridBagConstraints gbc_leftSide = new GridBagConstraints();
+        gbc_leftSide.insets = new Insets(0, 0, 5, 5);
+        gbc_leftSide.anchor = GridBagConstraints.EAST;
+        gbc_leftSide.gridx = 0;
+        gbc_leftSide.gridy = 0;
+        
+        
+
+		JLabel lblProductList = new JLabel("Product list");
 		lblProductList.setName("productListLabel");
-		GridBagConstraints gbc_lblProductList = new GridBagConstraints();
-		gbc_lblProductList.insets = new Insets(0, 0, 0, 5);
-		gbc_lblProductList.gridx = 0;
-		gbc_lblProductList.gridy = 0;
-		contentPane_1.add(lblProductList, gbc_lblProductList);
+		left.add(lblProductList);
 		
+		JScrollPane dataDisplay = new JScrollPane();
+		listProductModel = new DefaultListModel<>();
+		listProduct = new JList<>(listProductModel);
+		listProduct.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listProduct.setName("productList");
+		dataDisplay.setViewportView(listProduct);
+        
+        left.add(dataDisplay);
+        
+        content.add(left, gbc_leftSide);
+        panel.add(content);
+        
+		return panel;
+	}
+	
+	protected JPanel createRightPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JPanel content = new JPanel(new GridBagLayout());
+        
+        GridBagConstraints gbc_RightSide = new GridBagConstraints();
+        gbc_RightSide.insets = new Insets(0, 0, 5, 5);
+        gbc_RightSide.anchor = GridBagConstraints.EAST;
+        gbc_RightSide.gridx = 0;
+        gbc_RightSide.gridy = 0;
+        
+        
+        
+        
+		
+		return panel;
 	}
 
 	@Override
@@ -84,6 +143,4 @@ public class ProductViewSwing extends JFrame implements ProductView {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 }

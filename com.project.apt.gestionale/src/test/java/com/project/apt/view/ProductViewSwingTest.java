@@ -37,6 +37,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testControlsInitialState() {
 		window.label(JLabelMatcher.withName("productListLabel"));
+		window.list("productList");
 		
 	}
 
