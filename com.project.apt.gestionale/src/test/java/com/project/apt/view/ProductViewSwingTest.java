@@ -167,6 +167,10 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	
 	@Test
 	public void testShowErrorShowsInfoInRedIfMessageIsError() {
-		
+		Product product1 = new Product(testProductName1, testProductQuantity1);
+		GuiActionRunner.execute(
+			() -> productViewSwing.showError("Error message", product1, "error")
+		);
+		window.label("lblMessage").requireText("Error message: " + product1);
 	}
 }

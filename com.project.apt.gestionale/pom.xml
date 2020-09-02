@@ -43,7 +43,7 @@
 	    
 	    <!-- Excluding swing assertj code smell -->
 	    <sonar.issue.ignore.multicriteria.e13.ruleKey>
-	    	java:S2699
+	    	squid::S2699
 	    </sonar.issue.ignore.multicriteria.e13.ruleKey>
 	    
 	</properties>
