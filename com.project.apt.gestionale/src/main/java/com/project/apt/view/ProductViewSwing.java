@@ -55,6 +55,7 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	private JButton addProductButton;
 	private JButton editProductButton;
 	
+	private JLabel lblMessage;
 	
 	public void setProductController(ProductController productController) {
 		this.productController = productController;
@@ -226,7 +227,7 @@ public class ProductViewSwing extends JFrame implements ProductView {
 		gbcLblInfoMessages.anchor = GridBagConstraints.WEST;
 		content.add(lblInfoMessages, gbcLblInfoMessages);
 		
-		JLabel lblMessage = new JLabel(" ");
+		lblMessage = new JLabel(" ");
 		lblMessage.setName("lblMessage");
 		GridBagConstraints gbcLabel = new MyGridBagConstraints(0, 8);
 		content.add(lblMessage, gbcLabel);
@@ -240,14 +241,12 @@ public class ProductViewSwing extends JFrame implements ProductView {
 
 	@Override
 	public void listProducts(List<Product> products) {
-		// TODO Auto-generated method stub
-		
+		products.stream().forEach(listProductModel::addElement);
 	}
 
 	@Override
 	public void showError(String message, Product product, String type) {
-		// TODO Auto-generated method stub
-		
+		lblMessage.setText(message + ": " + product);
 	}
 
 	@Override
