@@ -6,14 +6,19 @@ import javax.swing.JFrame;
 
 import com.project.apt.controller.ProductController;
 import com.project.apt.model.Product;
+import com.project.apt.view.utils.MyGridBagConstraints;
+
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -22,6 +27,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ButtonGroup;
@@ -37,6 +43,7 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	
 	private transient ProductController productController;
 
+	private JScrollPane scrollPane;
 	private JList<Product> listProduct;
 	private DefaultListModel<Product> listProductModel;
 	
@@ -54,9 +61,10 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	}
 	
 	public ProductViewSwing() {
+		setMinimumSize(new Dimension(600, 400));
 		setTitle("Product Manager");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 600, 400);
 		getContentPane().setLayout(new BorderLayout());
 		
 		JPanel mainContent = new JPanel();
@@ -67,43 +75,33 @@ public class ProductViewSwing extends JFrame implements ProductView {
 
 		pack();
         setVisible(true);
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	}
 	
 	protected JPanel createLeftPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        JPanel content = new JPanel(new GridBagLayout());
-        JPanel left = new JPanel(new GridLayout(2, 0));
-        
-        GridBagConstraints gbc_leftSide = new GridBagConstraints();
-        gbc_leftSide.insets = new Insets(5, 0, 10, 10);
-        gbc_leftSide.anchor = GridBagConstraints.EAST;
-        
-        
-
-		JLabel lblProductList = new JLabel("Product list");
-		lblProductList.setName("productListLabel");
-		left.add(lblProductList);
+		scrollPane = new JScrollPane();
+		panel.add(scrollPane);
 		
-		JScrollPane dataDisplay = new JScrollPane();
+		// Listeners
+		
+		ListSelectionListener removeProductButtonEnabler = new ListSelectionListener() {
+    		@Override
+    		public void valueChanged(ListSelectionEvent e) {
+    			removeProductButton.setEnabled(
+    				listProduct.getSelectedIndex() != -1
+    			);
+    		}
+    	};
+		
+		// Components
+		
 		listProductModel = new DefaultListModel<>();
 		listProduct = new JList<>(listProductModel);
+		listProduct.setMinimumSize(new Dimension(250, 300));
 		listProduct.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listProduct.setName("productList");
-		dataDisplay.setViewportView(listProduct);
-        
-        left.add(dataDisplay);
-        
-        content.add(left, gbc_leftSide);
-        panel.add(content);
+		listProduct.addListSelectionListener(removeProductButtonEnabler);
+		scrollPane.setViewportView(listProduct);
         
 		return panel;
 	}
@@ -116,25 +114,46 @@ public class ProductViewSwing extends JFrame implements ProductView {
         GridBagConstraints gbc_RightSide = new GridBagConstraints();
         panel.add(content);
         
+        // Listeners
         
+        KeyAdapter addProductButtonEnabler = new KeyAdapter() {
+    		@Override
+    		public void keyReleased(KeyEvent e) {
+    			addProductButton.setEnabled(
+    				!txtInsertProductName.getText().trim().isEmpty() && !txtInsertProductQuantity.getText().trim().isEmpty()
+    			);
+    		}
+    	};
+    	
+    	KeyAdapter editProductButtonEnabler = new KeyAdapter() {
+    		@Override
+    		public void keyReleased(KeyEvent e) {
+    			editProductButton.setEnabled(
+    				!txtEditProductProperties.getText().trim().isEmpty()
+    			);
+    		}
+    	};
+    	
+    	// Components 
+    	
         txtInsertProductName = new JTextField();
-        txtInsertProductName.setText("Insert product name here");
         txtInsertProductName.setName("nameTextBox");
-        GridBagConstraints gbc_txtInsertProductName = createMyGBC(0, 0);
+        txtInsertProductName.addKeyListener(addProductButtonEnabler);
+        GridBagConstraints gbc_txtInsertProductName = new MyGridBagConstraints(0, 0);
         content.add(txtInsertProductName, gbc_txtInsertProductName);
-        txtInsertProductName.setColumns(10);
+        txtInsertProductName.setColumns(25);
         
         
         txtInsertProductQuantity = new JTextField();
-        txtInsertProductQuantity.setText("Insert product quantity here");
         txtInsertProductQuantity.setName("quantityTextBox");
-        GridBagConstraints gbc_txtInsertProductQuantity = createMyGBC(0, 1);
+        txtInsertProductQuantity.addKeyListener(addProductButtonEnabler);
+        GridBagConstraints gbc_txtInsertProductQuantity = new MyGridBagConstraints(0, 1);
         content.add(txtInsertProductQuantity, gbc_txtInsertProductQuantity);
-        txtInsertProductQuantity.setColumns(10);
+        txtInsertProductQuantity.setColumns(25);
         
         
         JPanel buttonsSplit = new JPanel(new GridLayout(0, 2));
-        GridBagConstraints gbc_buttonsSplit = createMyGBC(0, 2);
+        GridBagConstraints gbc_buttonsSplit = new MyGridBagConstraints(0, 2);
 
 		removeProductButton = new JButton("Remove");
 		removeProductButton.setName("removeProductButton");
@@ -147,27 +166,29 @@ public class ProductViewSwing extends JFrame implements ProductView {
 		buttonsSplit.add(addProductButton);
 		
 		content.add(buttonsSplit, gbc_buttonsSplit);
-        
+		
         
         txtEditProductProperties = new JTextField();
-        txtEditProductProperties.setText("Insert new product details here");
         txtEditProductProperties.setName("editPropertiesTextBox");
-        GridBagConstraints gbc_txtEditProductProperties = createMyGBC(0, 3);
+        txtEditProductProperties.addKeyListener(editProductButtonEnabler);
+        GridBagConstraints gbc_txtEditProductProperties = new MyGridBagConstraints(0, 3);
         content.add(txtEditProductProperties, gbc_txtEditProductProperties);
-        txtEditProductProperties.setColumns(10);
+        txtEditProductProperties.setColumns(25);
         
         
         JPanel editSplit = new JPanel(new GridLayout(0, 2));
-        GridBagConstraints gbc_editSplit = createMyGBC(0, 4);
+        GridBagConstraints gbc_editSplit = new MyGridBagConstraints(0, 4);
 
         String nameString = "Name";
         JRadioButton nameButton = new JRadioButton(nameString);
+        nameButton.setName("nameEditRadioButton");
         nameButton.setMnemonic(KeyEvent.VK_B);
         nameButton.setActionCommand(nameString);
         nameButton.setSelected(true);
         
         String quantityString = "Quantity";
         JRadioButton quantityButton = new JRadioButton(quantityString);
+        quantityButton.setName("quantityEditRadioButton");
         quantityButton.setMnemonic(KeyEvent.VK_B);
         quantityButton.setActionCommand(quantityString);
         
@@ -175,6 +196,11 @@ public class ProductViewSwing extends JFrame implements ProductView {
         editChoice.add(nameButton);
         editChoice.add(quantityButton);
         
+        JPanel editButtonGroupSplit = new JPanel(new GridLayout(2, 0));
+        editButtonGroupSplit.add(nameButton);
+        editButtonGroupSplit.add(quantityButton);
+        
+        editSplit.add(editButtonGroupSplit);
         
 		editProductButton = new JButton("Edit");
 		editProductButton.setName("editProductButton");
@@ -186,13 +212,8 @@ public class ProductViewSwing extends JFrame implements ProductView {
 		return panel;
 	}
 	
-	protected GridBagConstraints createMyGBC(int x, int y) {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(5, 0, 10, 10);
-		gbc.anchor = GridBagConstraints.EAST;
-		gbc.gridx = x;
-		gbc.gridy = y;
-		return gbc;
+	DefaultListModel<Product> getListProductModel() {
+		return listProductModel;
 	}
 
 	@Override
