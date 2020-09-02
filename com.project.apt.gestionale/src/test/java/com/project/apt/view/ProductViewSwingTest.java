@@ -42,14 +42,19 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		// left side
 		window.list("productList");
 		// right side
+		window.label(JLabelMatcher.withName("lblAddNewProduct"));
 		window.textBox("nameTextBox").requireEnabled();
 		window.textBox("quantityTextBox").requireEnabled();
 		window.button(JButtonMatcher.withName("removeProductButton")).requireDisabled();
 		window.button(JButtonMatcher.withName("addProductButton")).requireDisabled();
+		window.label(JLabelMatcher.withName("lblEditExistingProduct"));
 		window.textBox("editPropertiesTextBox").requireEnabled();
 		window.radioButton("nameEditRadioButton").requireEnabled();
 		window.radioButton("quantityEditRadioButton").requireEnabled();
 		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
+		window.label(JLabelMatcher.withName("lblInfoMessages"));
+		window.label(JLabelMatcher.withName("lblMessage"));
+		
 	}
 	
 	@Test
@@ -87,6 +92,13 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testEditProductButtonShouldBeEnabledWhenEditFieldIsFilled() {
 		window.textBox("editPropertiesTextBox").enterText("test2");
+		window.button(JButtonMatcher.withName("editProductButton")).requireEnabled();
+	}
+	
+	@Test
+	public void testEditProductButtonShouldBeEnabledWhenIntegerIsEntered() {
+		window.radioButton("quantityEditRadioButton").click();
+		window.textBox("editPropertiesTextBox").enterText("10");
 		window.button(JButtonMatcher.withName("editProductButton")).requireEnabled();
 	}
 

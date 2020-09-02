@@ -129,17 +129,23 @@ public class ProductViewSwing extends JFrame implements ProductView {
     		@Override
     		public void keyReleased(KeyEvent e) {
     			editProductButton.setEnabled(
-    				!txtEditProductProperties.getText().trim().isEmpty()
+    				!txtEditProductProperties.getText().trim().isEmpty() 
     			);
     		}
     	};
     	
     	// Components 
     	
+    	JLabel lblAddNewProduct = new JLabel("Add new product");
+    	lblAddNewProduct.setName("lblAddNewProduct");
+		GridBagConstraints gbclblAddNewProduct = new MyGridBagConstraints(0, 0);
+		gbclblAddNewProduct.anchor = GridBagConstraints.WEST;
+		content.add(lblAddNewProduct, gbclblAddNewProduct);
+    	
         txtInsertProductName = new JTextField();
         txtInsertProductName.setName("nameTextBox");
         txtInsertProductName.addKeyListener(addProductButtonEnabler);
-        GridBagConstraints gbc_txtInsertProductName = new MyGridBagConstraints(0, 0);
+        GridBagConstraints gbc_txtInsertProductName = new MyGridBagConstraints(0, 1);
         content.add(txtInsertProductName, gbc_txtInsertProductName);
         txtInsertProductName.setColumns(25);
         
@@ -147,13 +153,13 @@ public class ProductViewSwing extends JFrame implements ProductView {
         txtInsertProductQuantity = new JTextField();
         txtInsertProductQuantity.setName("quantityTextBox");
         txtInsertProductQuantity.addKeyListener(addProductButtonEnabler);
-        GridBagConstraints gbc_txtInsertProductQuantity = new MyGridBagConstraints(0, 1);
+        GridBagConstraints gbc_txtInsertProductQuantity = new MyGridBagConstraints(0, 2);
         content.add(txtInsertProductQuantity, gbc_txtInsertProductQuantity);
         txtInsertProductQuantity.setColumns(25);
         
         
         JPanel buttonsSplit = new JPanel(new GridLayout(0, 2));
-        GridBagConstraints gbc_buttonsSplit = new MyGridBagConstraints(0, 2);
+        GridBagConstraints gbc_buttonsSplit = new MyGridBagConstraints(0, 3);
 
 		removeProductButton = new JButton("Remove");
 		removeProductButton.setName("removeProductButton");
@@ -167,17 +173,22 @@ public class ProductViewSwing extends JFrame implements ProductView {
 		
 		content.add(buttonsSplit, gbc_buttonsSplit);
 		
-        
+		JLabel lblEditExistingProduct = new JLabel("Edit existing product");
+		lblEditExistingProduct.setName("lblEditExistingProduct");
+		GridBagConstraints gbclblEditExistingProduct = new MyGridBagConstraints(0, 4);
+		gbclblEditExistingProduct.anchor = GridBagConstraints.WEST;
+		content.add(lblEditExistingProduct, gbclblEditExistingProduct);
+		
         txtEditProductProperties = new JTextField();
         txtEditProductProperties.setName("editPropertiesTextBox");
         txtEditProductProperties.addKeyListener(editProductButtonEnabler);
-        GridBagConstraints gbc_txtEditProductProperties = new MyGridBagConstraints(0, 3);
+        GridBagConstraints gbc_txtEditProductProperties = new MyGridBagConstraints(0, 5);
         content.add(txtEditProductProperties, gbc_txtEditProductProperties);
         txtEditProductProperties.setColumns(25);
         
         
         JPanel editSplit = new JPanel(new GridLayout(0, 2));
-        GridBagConstraints gbc_editSplit = new MyGridBagConstraints(0, 4);
+        GridBagConstraints gbc_editSplit = new MyGridBagConstraints(0, 6);
 
         String nameString = "Name";
         JRadioButton nameButton = new JRadioButton(nameString);
@@ -208,6 +219,17 @@ public class ProductViewSwing extends JFrame implements ProductView {
 		editSplit.add(editProductButton);
 		
 		content.add(editSplit, gbc_editSplit);
+		
+		JLabel lblInfoMessages = new JLabel("Info messages");
+		lblInfoMessages.setName("lblInfoMessages");
+		GridBagConstraints gbcLblInfoMessages = new MyGridBagConstraints(0, 7);
+		gbcLblInfoMessages.anchor = GridBagConstraints.WEST;
+		content.add(lblInfoMessages, gbcLblInfoMessages);
+		
+		JLabel lblMessage = new JLabel(" ");
+		lblMessage.setName("lblMessage");
+		GridBagConstraints gbcLabel = new MyGridBagConstraints(0, 8);
+		content.add(lblMessage, gbcLabel);
 		
 		return panel;
 	}

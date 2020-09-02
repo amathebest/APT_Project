@@ -31,6 +31,7 @@
       		${project.reporting.outputDirectory}/jacoco/jacoco.xml
     	</sonar.coverage.jacoco.xmlReportPaths>
     	
+    	<!-- Excluding some files from code coverage -->
     	<sonar.coverage.exclusions>
 			**/model/*
     	</sonar.coverage.exclusions>
@@ -39,6 +40,12 @@
 			${project.build.directory}/surefire-reports,
 			${project.build.directory}/failsafe-reports
 	    </sonar.junit.reportPaths>
+	    
+	    <!-- Excluding swing assertj code smell -->
+	    <sonar.issue.ignore.multicriteria.e13.ruleKey>
+	    	java:S2699
+	    </sonar.issue.ignore.multicriteria.e13.ruleKey>
+	    
 	</properties>
 
 	<dependencies>
