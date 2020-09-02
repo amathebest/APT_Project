@@ -129,7 +129,7 @@ public class ProductViewSwing extends JFrame implements ProductView {
     		@Override
     		public void keyReleased(KeyEvent e) {
     			editProductButton.setEnabled(
-    				!txtEditProductProperties.getText().trim().isEmpty() 
+    				!txtEditProductProperties.getText().trim().isEmpty() && listProduct.getSelectedIndex() != -1
     			);
     		}
     	};

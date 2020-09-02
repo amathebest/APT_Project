@@ -90,16 +90,41 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	}
 	
 	@Test
-	public void testEditProductButtonShouldBeEnabledWhenEditFieldIsFilled() {
+	public void testRemoveProductButtonShouldBeDisabledWhenNoProductIsSelected() {
+		GuiActionRunner.execute(
+			() -> productViewSwing.getListProductModel().addElement(new Product("test1", 10))
+		);
+		window.button(JButtonMatcher.withName("removeProductButton")).requireDisabled();
+	}
+	
+	@Test
+	public void testEditProductButtonShouldBeEnabledWhenOneProductIsSelectedAndEditFieldIsFilled() {
+		GuiActionRunner.execute(
+			() -> productViewSwing.getListProductModel().addElement(new Product("test1", 10))
+		);
+		window.list("productList").selectItem(0);
 		window.textBox("editPropertiesTextBox").enterText("test2");
 		window.button(JButtonMatcher.withName("editProductButton")).requireEnabled();
 	}
 	
 	@Test
-	public void testEditProductButtonShouldBeEnabledWhenIntegerIsEntered() {
+	public void testEditProductButtonShouldBeEnabledWhenOneProductIsSelectedAndIntegerIsEntered() {
+		GuiActionRunner.execute(
+			() -> productViewSwing.getListProductModel().addElement(new Product("test1", 10))
+		);
+		window.list("productList").selectItem(0);
 		window.radioButton("quantityEditRadioButton").click();
-		window.textBox("editPropertiesTextBox").enterText("10");
+		window.textBox("editPropertiesTextBox").enterText("5");
 		window.button(JButtonMatcher.withName("editProductButton")).requireEnabled();
+	}
+	
+	@Test
+	public void testEditProductButtonShouldBeDisabledWhenFieldIsFilledButNoProductIsSelected() {
+		GuiActionRunner.execute(
+			() -> productViewSwing.getListProductModel().addElement(new Product("test1", 10))
+		);
+		window.textBox("editPropertiesTextBox").enterText("5");
+		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
 	}
 
 }
