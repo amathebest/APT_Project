@@ -1,5 +1,6 @@
 package com.project.apt.view;
 
+import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.core.matcher.JLabelMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -36,9 +37,15 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	
 	@Test
 	public void testControlsInitialState() {
+		// left side
 		window.label(JLabelMatcher.withName("productListLabel"));
 		window.list("productList");
-		
+		// right side
+		window.textBox("nameTextBox").requireEnabled();
+		window.textBox("quantityTextBox").requireEnabled();
+		window.button(JButtonMatcher.withName("removeProductButton")).requireDisabled();
+		window.button(JButtonMatcher.withName("addProductButton")).requireDisabled();
+		window.textBox("editPropertiesTextBox").requireEnabled();
 	}
 
 }
