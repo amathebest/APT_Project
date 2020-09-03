@@ -90,6 +90,13 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	}
 	
 	@Test
+	public void testAddProductButtonShouldBeDisabledWhenQuantityInsertedIsNotInteger() {
+		window.textBox("nameTextBox").enterText(testProductName1);
+		window.textBox("quantityTextBox").enterText("string");
+		window.button(JButtonMatcher.withName("addProductButton")).requireDisabled();
+	}
+	
+	@Test
 	public void testRemoveProductButtonShouldBeEnabledWhenOneProductIsSelectedOnTheList() {
 		GuiActionRunner.execute(
 			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
@@ -145,6 +152,17 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		);
 		window.list("productList").selectItem(0);
 		window.textBox("editPropertiesTextBox").setText("");
+		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
+	}
+	
+	@Test
+	public void testEditProductButtonShouldBeDisabledWhenProductIsSelectedButQualityFieldContainsNonIntegerValue() {
+		GuiActionRunner.execute(
+			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
+		);
+		window.list("productList").selectItem(0);
+		window.radioButton("quantityEditRadioButton").click();
+		window.textBox("editPropertiesTextBox").enterText("string");
 		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
 	}
 	

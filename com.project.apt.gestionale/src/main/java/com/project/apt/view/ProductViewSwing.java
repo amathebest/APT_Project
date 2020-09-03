@@ -58,6 +58,9 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	
 	private JLabel lblMessage;
 	
+	private JRadioButton quantityButton;
+	private JRadioButton nameButton;
+	
 	public void setProductController(ProductController productController) {
 		this.productController = productController;
 	}
@@ -122,7 +125,7 @@ public class ProductViewSwing extends JFrame implements ProductView {
     		@Override
     		public void keyReleased(KeyEvent e) {
     			addProductButton.setEnabled(
-    				!txtInsertProductName.getText().trim().isEmpty() && !txtInsertProductQuantity.getText().trim().isEmpty()
+    				!txtInsertProductName.getText().trim().isEmpty() && !txtInsertProductQuantity.getText().trim().isEmpty() && txtInsertProductQuantity.getText().matches("^[1-9][0-9]*")
     			);
     		}
     	};
@@ -131,7 +134,9 @@ public class ProductViewSwing extends JFrame implements ProductView {
     		@Override
     		public void keyReleased(KeyEvent e) {
     			editProductButton.setEnabled(
-    				!txtEditProductProperties.getText().trim().isEmpty() && listProduct.getSelectedIndex() != -1
+    				!txtEditProductProperties.getText().trim().isEmpty() && 
+    				listProduct.getSelectedIndex() != -1 &&
+    				((quantityButton.isSelected() && txtEditProductProperties.getText().matches("^[1-9][0-9]*")) || nameButton.isSelected())
     			);
     		}
     	};
@@ -193,14 +198,14 @@ public class ProductViewSwing extends JFrame implements ProductView {
         GridBagConstraints gbc_editSplit = new MyGridBagConstraints(0, 6);
 
         String nameString = "Name";
-        JRadioButton nameButton = new JRadioButton(nameString);
+        nameButton = new JRadioButton(nameString);
         nameButton.setName("nameEditRadioButton");
         nameButton.setMnemonic(KeyEvent.VK_B);
         nameButton.setActionCommand(nameString);
         nameButton.setSelected(true);
         
         String quantityString = "Quantity";
-        JRadioButton quantityButton = new JRadioButton(quantityString);
+        quantityButton = new JRadioButton(quantityString);
         quantityButton.setName("quantityEditRadioButton");
         quantityButton.setMnemonic(KeyEvent.VK_B);
         quantityButton.setActionCommand(quantityString);
