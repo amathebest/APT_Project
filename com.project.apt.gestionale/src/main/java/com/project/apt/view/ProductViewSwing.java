@@ -13,7 +13,6 @@ import java.awt.GridLayout;
 
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -27,7 +26,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -35,10 +33,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JSplitPane;
 
 public class ProductViewSwing extends JFrame implements ProductView {
 	
@@ -271,7 +266,7 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	@Override
 	public void showError(String message, Product product, String type) {
 		lblMessage.setText(message + ": " + product);
-		if (type == "error") {
+		if (type.contentEquals("error")) {
 			lblMessage.setForeground(Color.RED);
 		} else {
 			lblMessage.setForeground(Color.BLACK);
