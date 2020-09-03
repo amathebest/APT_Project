@@ -76,7 +76,7 @@ public class ProductControllerTest {
 		productController.addProduct(newProduct);
 		InOrder inOrder = inOrder(productRepository, productView);
 		inOrder.verify(productRepository).alterProductQuantity(existingProduct, testProductQuantity2);
-		inOrder.verify(productView).productEdited(existingProduct);
+		inOrder.verify(productView).productEdited(existingProduct, newProduct);
 		inOrder.verify(productView).showError("Product already present, updating quantity instead.", existingProduct, "info");
 	}
 	
@@ -106,7 +106,7 @@ public class ProductControllerTest {
 		productController.updateProductName(productToUpdate, testProductName2);
 		InOrder inOrder = inOrder(productRepository, productView);
 		inOrder.verify(productRepository).alterProductName(productToUpdate, testProductName2);
-		inOrder.verify(productView).productEdited(productToUpdate);
+		inOrder.verify(productView).productEdited(productToUpdate, new Product(testProductName2, productToUpdate.getQuantity()));
 	}
 	
 	@Test
@@ -134,7 +134,7 @@ public class ProductControllerTest {
 		productController.updateProductQuantity(productToUpdate, testProductQuantity2);
 		InOrder inOrder = inOrder(productRepository, productView);
 		inOrder.verify(productRepository).alterProductQuantity(productToUpdate, testProductQuantity2);
-		inOrder.verify(productView).productEdited(productToUpdate);
+		inOrder.verify(productView).productEdited(productToUpdate, new Product(productToUpdate.getName(), testProductQuantity2));
 	}
 	
 	@Test

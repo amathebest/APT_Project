@@ -24,7 +24,7 @@ public class ProductController {
 		Product existingProduct = productRepository.findByName(product.getName());
 		if (existingProduct != null) {
 			productRepository.alterProductQuantity(existingProduct, product.getQuantity());
-			productView.productEdited(existingProduct);
+			productView.productEdited(existingProduct, product);
 			productView.showError("Product already present, updating quantity instead.", existingProduct, "info");
 			return;
 		}
@@ -48,7 +48,7 @@ public class ProductController {
 		if (existingProductOldName != null) {
 			if (existingProductNewName == null) {
 				productRepository.alterProductName(product, newName);
-				productView.productEdited(product);
+				productView.productEdited(product, new Product(newName, product.getQuantity()));
 				return;
 			}
 			productView.showError("Database contains already a product with selected name", product, "error");
@@ -64,6 +64,6 @@ public class ProductController {
 			return;
 		}
 		productRepository.alterProductQuantity(product, newQuantity);
-		productView.productEdited(product);
+		productView.productEdited(product, new Product(product.getName(), newQuantity));
 	}
 }
