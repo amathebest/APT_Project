@@ -2,7 +2,10 @@ package com.project.apt.view;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.awt.Color;
 import java.util.Arrays;
+
+import javax.swing.DefaultListModel;
 
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.core.matcher.JLabelMatcher;
@@ -172,5 +175,64 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 			() -> productViewSwing.showError("Error message", product1, "error")
 		);
 		window.label("lblMessage").requireText("Error message: " + product1);
+		window.label("lblMessage").foreground().requireEqualTo(Color.RED);
+	}
+	
+	@Test
+	public void testShowErrorShowsInfoInBlackIfMessageIsInfo() {
+		Product product1 = new Product(testProductName1, testProductQuantity1);
+		GuiActionRunner.execute(
+			() -> productViewSwing.showError("Error message", product1, "info")
+		);
+		window.label("lblMessage").requireText("Error message: " + product1);
+		window.label("lblMessage").foreground().requireEqualTo(Color.BLACK);
+	}
+	
+	@Test
+	public void testProductAddedShouldAddProductToTheListAndCleanupErrorMessage() {
+		Product product1 = new Product(testProductName1, testProductQuantity1);
+		GuiActionRunner.execute(
+			() -> productViewSwing.productAdded(product1)
+		);
+		String[] listProducts = window.list().contents();
+		assertThat(listProducts).containsExactly(product1.toString());
+		window.label("lblMessage").requireText(" ");
+	}
+	
+	@Test
+	public void testProductDeletedShouldRemoveProductFromTheListAndCleanupErrorMessage() {
+		Product product1 = new Product(testProductName1, testProductQuantity1);
+		Product product2 = new Product(testProductName2, testProductQuantity2);
+		GuiActionRunner.execute(
+			() -> {
+				DefaultListModel<Product> listProductModel = productViewSwing.getListProductModel();
+				listProductModel.addElement(product1);
+				listProductModel.addElement(product2);
+			}
+		);
+		GuiActionRunner.execute(
+			() -> productViewSwing.productDeleted(product2)
+		);
+		String[] listProducts = window.list().contents();
+		assertThat(listProducts).containsExactly(product1.toString());
+		window.label("lblMessage").requireText(" ");		
+	}
+	
+	@Test
+	public void testProductEditedShouldEditProductOnTheListAndCleanupErrorMessage() {
+		Product product1 = new Product(testProductName1, testProductQuantity1);
+		Product product2 = new Product(testProductName2, testProductQuantity1);
+		GuiActionRunner.execute(
+			() -> {
+				DefaultListModel<Product> listProductModel = productViewSwing.getListProductModel();
+				listProductModel.addElement(product1);
+			}
+		);
+		GuiActionRunner.execute(
+			() -> productViewSwing.productEdited(product1, product2)
+		);
+		String[] listProducts = window.list().contents();
+		assertThat(listProducts).containsExactly(product2.toString());
+		window.label("lblMessage").requireText(" ");
 	}
 }

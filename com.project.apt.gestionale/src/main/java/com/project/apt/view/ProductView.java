@@ -8,6 +8,6 @@ public interface ProductView {
 	void listProducts(List<Product> products);
 	void showError(String message, Product product, String type);
 	void productAdded(Product product);
-	void productEdited(Product product);
+	void productEdited(Product productBefore, Product productAfter);
 	void productDeleted(Product product);
 }

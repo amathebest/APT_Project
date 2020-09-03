@@ -18,6 +18,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
@@ -247,23 +248,28 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	@Override
 	public void showError(String message, Product product, String type) {
 		lblMessage.setText(message + ": " + product);
+		if (type == "error") {
+			lblMessage.setForeground(Color.RED);
+		} else {
+			lblMessage.setForeground(Color.BLACK);
+		}
 	}
 
 	@Override
 	public void productAdded(Product product) {
-		// TODO Auto-generated method stub
-		
+		listProductModel.addElement(product);
+		lblMessage.setText(" ");
 	}
 
 	@Override
-	public void productEdited(Product product) {
-		// TODO Auto-generated method stub
-		
+	public void productEdited(Product productBefore, Product productAfter) {
+		listProductModel.setElementAt(productAfter, listProductModel.indexOf(productBefore));
+		lblMessage.setText(" ");
 	}
 
 	@Override
 	public void productDeleted(Product product) {
-		// TODO Auto-generated method stub
-		
+		listProductModel.removeElement(product);
+		lblMessage.setText(" ");
 	}
 }
