@@ -1,6 +1,7 @@
 package com.project.apt.view;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.awt.Color;
 import java.util.Arrays;
@@ -252,5 +253,29 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		String[] listProducts = window.list().contents();
 		assertThat(listProducts).containsExactly(product2.toString());
 		window.label("lblMessage").requireText(" ");
+	}
+	
+	// Controller delegation tests
+	
+	@Test
+	public void testAddProductButtonShouldDelegateToControllerAddProduct() {
+		window.textBox("nameTextBox").enterText(testProductName1);
+		window.textBox("quantityTextBox").enterText("10");
+		window.button("addProductButton").click();
+		verify(productController).addProduct(new Product(testProductName1, 10));
+	}
+	
+	@Test
+	public void testRemoveProductButtonShouldDelegateToControllerRemoveProduct() {
+		Product product1 = new Product(testProductName1, testProductQuantity1);
+		GuiActionRunner.execute(
+			() -> {
+				DefaultListModel<Product> listProductModel = productViewSwing.getListProductModel();
+				listProductModel.addElement(product1);
+			}
+		);
+		window.list("productList").selectItem(0);
+		window.button("removeProductButton").click();
+		verify(productController).removeProduct(product1);
 	}
 }

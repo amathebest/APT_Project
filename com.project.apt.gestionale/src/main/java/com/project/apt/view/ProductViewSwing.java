@@ -28,6 +28,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -141,6 +143,20 @@ public class ProductViewSwing extends JFrame implements ProductView {
     		}
     	};
     	
+    	ActionListener addProductControllerDelegation = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				productController.addProduct(new Product(txtInsertProductName.getText(), Integer.parseInt(txtInsertProductQuantity.getText())));
+			}
+    	};
+    	
+    	ActionListener removeProductControllerDelegation = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				productController.removeProduct(listProduct.getSelectedValue());
+			}
+    	};
+    	
     	// Components 
     	
     	JLabel lblAddNewProduct = new JLabel("Add new product");
@@ -171,11 +187,13 @@ public class ProductViewSwing extends JFrame implements ProductView {
 		removeProductButton = new JButton("Remove");
 		removeProductButton.setName("removeProductButton");
 		removeProductButton.setEnabled(false);
+		removeProductButton.addActionListener(removeProductControllerDelegation);
 		buttonsSplit.add(removeProductButton);
 
 		addProductButton = new JButton("Add");
 		addProductButton.setName("addProductButton");
 		addProductButton.setEnabled(false);
+		addProductButton.addActionListener(addProductControllerDelegation);
 		buttonsSplit.add(addProductButton);
 		
 		content.add(buttonsSplit, gbc_buttonsSplit);
