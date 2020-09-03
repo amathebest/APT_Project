@@ -54,7 +54,8 @@
 	    	squid:S1192
 	    </sonar.issue.ignore.multicriteria.e12.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e12.resourceKey>
-	    	**/ProductViewSwing*.java
+	    	**/ProductController*.java
+	    	**/ProductRepositoryMongo*.java
 	    </sonar.issue.ignore.multicriteria.e12.resourceKey>
 	    
 	    <!-- Excluding swing assertj code smell that doesn't detect swing verify methods -->
@@ -62,8 +63,7 @@
 	    	squid:S2699
 	    </sonar.issue.ignore.multicriteria.e13.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e13.resourceKey>
-	    	**/ProductController*.java
-	    	**/ProductRepositoryMongo*.java
+	    	**/ProductViewSwing*.java
 	    </sonar.issue.ignore.multicriteria.e13.resourceKey>
 	    
 	</properties>
