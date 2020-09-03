@@ -41,7 +41,6 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	
 	private transient ProductController productController;
 
-	private JScrollPane scrollPane;
 	private JList<Product> listProduct;
 	private DefaultListModel<Product> listProductModel;
 	
@@ -81,7 +80,7 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	
 	protected JPanel createLeftPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-		scrollPane = new JScrollPane();
+    	JScrollPane scrollPane = new JScrollPane();
 		panel.add(scrollPane);
 		
 		// Listeners
@@ -110,9 +109,9 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	
 	protected JPanel createRightPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        GridBagLayout gbl_content = new GridBagLayout();
-        gbl_content.columnWeights = new double[]{1.0};
-        JPanel content = new JPanel(gbl_content);
+        GridBagLayout gblContent = new GridBagLayout();
+        gblContent.columnWeights = new double[]{1.0};
+        JPanel content = new JPanel(gblContent);
         GridBagConstraints gbc_RightSide = new GridBagConstraints();
         panel.add(content);
         

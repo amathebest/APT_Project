@@ -43,7 +43,7 @@
 	    
 	    <!-- Disable rule for "Inheritance tree of classes should not be too deep" (we use inherit from Swing classes, whose inheritance is already deep) -->
 	    <sonar.issue.ignore.multicriteria.e11.ruleKey>
-	      	squid:S110
+	      	java:S110
 	    </sonar.issue.ignore.multicriteria.e11.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e11.resourceKey>
 	    	**/ProductViewSwing*.java
@@ -51,7 +51,7 @@
 	    
 	    <!-- Excluding string duplicates code smell, doesn't make sense to use a string variable for "name", "quantity" or "error" -->
 	    <sonar.issue.ignore.multicriteria.e12.ruleKey>
-	    	squid:S1192
+	    	java:S1192
 	    </sonar.issue.ignore.multicriteria.e12.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e12.resourceKey>
 	    	**/ProductController*.java
@@ -60,7 +60,7 @@
 	    
 	    <!-- Excluding swing assertj code smell that doesn't detect swing verify methods -->
 	    <sonar.issue.ignore.multicriteria.e13.ruleKey>
-	    	squid:S2699
+	    	java:S2699
 	    </sonar.issue.ignore.multicriteria.e13.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e13.resourceKey>
 	    	**/ProductViewSwing*.java

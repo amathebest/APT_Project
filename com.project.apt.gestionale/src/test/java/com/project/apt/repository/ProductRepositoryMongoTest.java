@@ -126,6 +126,7 @@ public class ProductRepositoryMongoTest {
 		);	
 	}
 	
+	@Test
 	public void testAlterProductQuantityShouldChangeProductQuantity() {
 		productDocCollection.insertOne(new Document().append("name", testProductName1).append("quantity", testProductQuantity1));
 		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
