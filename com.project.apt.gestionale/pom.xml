@@ -20,11 +20,13 @@
 	    <mongo.driver.version>3.11.2</mongo.driver.version>
     	<mongo.java.server.version>1.16.0</mongo.java.server.version>
     	<slf4f.version>1.7.21</slf4f.version>
+    	<test.containers.version>1.10.5</test.containers.version>
     	
 		
 		<!-- Plugins versions -->
 		<jacoco.version>0.8.4</jacoco.version>
 		<sonar.version>3.7.0.1746</sonar.version>
+		<maven.surfire.plugin.version>2.22.2</maven.surfire.plugin.version>
 		
 		
 		<sonar.coverage.jacoco.xmlReportPaths>
@@ -41,12 +43,14 @@
 			${project.build.directory}/failsafe-reports
 	    </sonar.junit.reportPaths>
 	    
+	    <sonar.issue.ignore.multicriteria>e11,e12,e13</sonar.issue.ignore.multicriteria>
+	    
 	    <!-- Disable rule for "Inheritance tree of classes should not be too deep" (we use inherit from Swing classes, whose inheritance is already deep) -->
 	    <sonar.issue.ignore.multicriteria.e11.ruleKey>
 	      	java:S110
 	    </sonar.issue.ignore.multicriteria.e11.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e11.resourceKey>
-	    	**/ProductViewSwing*.java
+	    	**/ProductViewSwing.java
 	    </sonar.issue.ignore.multicriteria.e11.resourceKey>
 	    
 	    <!-- Excluding string duplicates code smell, doesn't make sense to use a string variable for "name", "quantity" or "error" -->
@@ -63,7 +67,7 @@
 	    	java:S2699
 	    </sonar.issue.ignore.multicriteria.e13.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e13.resourceKey>
-	    	**/ProductViewSwing*.java
+	    	**/ProductViewSwingTest.java
 	    </sonar.issue.ignore.multicriteria.e13.resourceKey>
 	    
 	</properties>
@@ -75,14 +79,14 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
-			<scope>test</scope>
+			<!-- <scope>test</scope> -->
 		</dependency>
 		
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-swing-junit</artifactId>
 			<version>${assertj.swing.version}</version>
-			<scope>test</scope>
+			<!-- <scope>test</scope> -->
     	</dependency>
 	  	
 	  	<dependency>
@@ -111,6 +115,13 @@
 			<artifactId>slf4j-simple</artifactId>
 			<version>${slf4f.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>${test.containers.version}</version>
+			<!-- <scope>test</scope> -->
+		</dependency>
     	
 	</dependencies>
 
@@ -138,8 +149,70 @@
 					</executions>
 				</plugin>
 				
-				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>${failsafe.version}</version>
+					<executions>
+						<execution>
+							<id>it-tests</id>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>e2e-tests</id>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+							<configuration>
+								<excludes>
+									<exclude>**/*IT.java</exclude>
+								</excludes>
+								<includes>
+									<include>**/*E2E.java</include>
+								</includes>
+							</configuration>
+						</execution>
+					</executions>
+      			</plugin>
 			
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>${docker.frabric8.version}</version>
+					<configuration>
+						<images>
+							<image>
+								<name>mongo:4.0.5</name>
+								<run>
+									<ports>
+										<port>27017:27017</port>
+									</ports>
+								</run>
+							</image>
+						</images>
+					</configuration>
+					<executions>
+						<execution>
+							<id>docker:start</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>start</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>docker:stop</id>
+							<phase>post-integration-test</phase>
+							<goals>
+								<goal>stop</goal>
+							</goals>
+						</execution>
+					</executions>
+      			</plugin>
+				
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
@@ -186,16 +259,12 @@
 							<excludes>
 								<exclude>**/model/*</exclude>
 							</excludes>
-							<!-- Don't use the default property so that we'll do code 
-							coverage only for surefire tests (not for failsafe) -->
 							<propertyName>surefireArgLine</propertyName>
 						</configuration>
 						<executions>
 							<execution>
 								<goals>
-									<!-- binds by default to the phase "initialize" -->
 									<goal>prepare-agent</goal>
-									<!-- binds by default to the phase "verify" -->
 									<goal>report</goal>
 								</goals>
 							</execution>
@@ -205,7 +274,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
-						<version>2.22.2</version>
+						<version>${maven.surfire.plugin.version}</version>
 						<configuration>
 							<!-- Code coverage for surefire tests -->
 							<argLine>${surefireArgLine}</argLine>
