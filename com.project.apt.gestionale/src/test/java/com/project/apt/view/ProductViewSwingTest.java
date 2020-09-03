@@ -168,6 +168,20 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	}
 	
 	@Test
+	public void testEditProductButtonShouldBeDisabledWhenNameRadioIsSelectedButFieldIsEmptyOrNoProductIsSelected() {
+		GuiActionRunner.execute(
+			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
+		);
+		window.list("productList").selectItem(0);
+		window.radioButton("nameEditRadioButton").click();
+		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
+		
+		window.list("productList").clearSelection();
+		window.textBox("editPropertiesTextBox").enterText("string");
+		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
+	}
+	
+	@Test
 	public void testListProductsShouldDisplayAllProductsInTheProductList() {
 		Product product1 = new Product(testProductName1, testProductQuantity1);
 		Product product2 = new Product(testProductName2, testProductQuantity2);

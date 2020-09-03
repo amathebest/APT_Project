@@ -112,7 +112,6 @@ public class ProductViewSwing extends JFrame implements ProductView {
         GridBagLayout gblContent = new GridBagLayout();
         gblContent.columnWeights = new double[]{1.0};
         JPanel content = new JPanel(gblContent);
-        GridBagConstraints gbc_RightSide = new GridBagConstraints();
         panel.add(content);
         
         // Listeners
@@ -121,7 +120,9 @@ public class ProductViewSwing extends JFrame implements ProductView {
     		@Override
     		public void keyReleased(KeyEvent e) {
     			addProductButton.setEnabled(
-    				!txtInsertProductName.getText().trim().isEmpty() && !txtInsertProductQuantity.getText().trim().isEmpty() && txtInsertProductQuantity.getText().matches("^[1-9][0-9]*")
+    				!txtInsertProductName.getText().trim().isEmpty() && 
+    				!txtInsertProductQuantity.getText().trim().isEmpty() && 
+    				txtInsertProductQuantity.getText().matches("^[1-9][0-9]*")
     			);
     		}
     	};
@@ -162,21 +163,21 @@ public class ProductViewSwing extends JFrame implements ProductView {
         txtInsertProductName = new JTextField();
         txtInsertProductName.setName("nameTextBox");
         txtInsertProductName.addKeyListener(addProductButtonEnabler);
-        GridBagConstraints gbc_txtInsertProductName = new MyGridBagConstraints(0, 1);
-        content.add(txtInsertProductName, gbc_txtInsertProductName);
+        GridBagConstraints gbcTxtInsertProductName = new MyGridBagConstraints(0, 1);
+        content.add(txtInsertProductName, gbcTxtInsertProductName);
         txtInsertProductName.setColumns(25);
         
         
         txtInsertProductQuantity = new JTextField();
         txtInsertProductQuantity.setName("quantityTextBox");
         txtInsertProductQuantity.addKeyListener(addProductButtonEnabler);
-        GridBagConstraints gbc_txtInsertProductQuantity = new MyGridBagConstraints(0, 2);
-        content.add(txtInsertProductQuantity, gbc_txtInsertProductQuantity);
+        GridBagConstraints gbcTxtInsertProductQuantity = new MyGridBagConstraints(0, 2);
+        content.add(txtInsertProductQuantity, gbcTxtInsertProductQuantity);
         txtInsertProductQuantity.setColumns(25);
         
         
         JPanel buttonsSplit = new JPanel(new GridLayout(0, 2));
-        GridBagConstraints gbc_buttonsSplit = new MyGridBagConstraints(0, 3);
+        GridBagConstraints gbcButtonsSplit = new MyGridBagConstraints(0, 3);
 
 		removeProductButton = new JButton("Remove");
 		removeProductButton.setName("removeProductButton");
@@ -190,24 +191,24 @@ public class ProductViewSwing extends JFrame implements ProductView {
 		addProductButton.addActionListener(addProductControllerDelegation);
 		buttonsSplit.add(addProductButton);
 		
-		content.add(buttonsSplit, gbc_buttonsSplit);
+		content.add(buttonsSplit, gbcButtonsSplit);
 		
 		JLabel lblEditExistingProduct = new JLabel("Edit existing product");
 		lblEditExistingProduct.setName("lblEditExistingProduct");
-		GridBagConstraints gbclblEditExistingProduct = new MyGridBagConstraints(0, 4);
-		gbclblEditExistingProduct.anchor = GridBagConstraints.WEST;
-		content.add(lblEditExistingProduct, gbclblEditExistingProduct);
+		GridBagConstraints gbcLblEditExistingProduct = new MyGridBagConstraints(0, 4);
+		gbcLblEditExistingProduct.anchor = GridBagConstraints.WEST;
+		content.add(lblEditExistingProduct, gbcLblEditExistingProduct);
 		
         txtEditProductProperties = new JTextField();
         txtEditProductProperties.setName("editPropertiesTextBox");
         txtEditProductProperties.addKeyListener(editProductButtonEnabler);
-        GridBagConstraints gbc_txtEditProductProperties = new MyGridBagConstraints(0, 5);
-        content.add(txtEditProductProperties, gbc_txtEditProductProperties);
+        GridBagConstraints gbcTxtEditProductProperties = new MyGridBagConstraints(0, 5);
+        content.add(txtEditProductProperties, gbcTxtEditProductProperties);
         txtEditProductProperties.setColumns(25);
         
         
         JPanel editSplit = new JPanel(new GridLayout(0, 2));
-        GridBagConstraints gbc_editSplit = new MyGridBagConstraints(0, 6);
+        GridBagConstraints gbcEditSplit = new MyGridBagConstraints(0, 6);
 
         String nameString = "Name";
         nameButton = new JRadioButton(nameString);
@@ -237,7 +238,7 @@ public class ProductViewSwing extends JFrame implements ProductView {
 		editProductButton.setEnabled(false);
 		editSplit.add(editProductButton);
 		
-		content.add(editSplit, gbc_editSplit);
+		content.add(editSplit, gbcEditSplit);
 		
 		JLabel lblInfoMessages = new JLabel("Info messages");
 		lblInfoMessages.setName("lblInfoMessages");
