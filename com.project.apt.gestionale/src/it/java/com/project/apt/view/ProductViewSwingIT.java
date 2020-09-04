@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 import java.awt.Color;
 import java.net.InetSocketAddress;
 
-import org.assertj.swing.core.matcher.JLabelMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
@@ -34,9 +33,9 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 	private MongoClient mongoClient;
 	
 	private FrameFixture window;
-	private ProductViewSwing productViewSwing;
+	private ProductViewSwing productView;
 	private ProductController productController;
-	private ProductRepositoryMongo productRepositoryMongo;
+	private ProductRepositoryMongo productRepository;
 	
 	private static final String testProductName1 = "test1";
 	private static final String testProductName2 = "test2";
@@ -60,17 +59,17 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 	@Override
 	protected void onSetUp() {
 		mongoClient = new MongoClient(new ServerAddress(serverAddress));
-		productRepositoryMongo = new ProductRepositoryMongo(mongoClient, DB_GESTIONALE, PRODUCT_COLLECTION);
-		for (Product product : productRepositoryMongo.findAllProducts()) {
-			productRepositoryMongo.removeProduct(product);
+		productRepository = new ProductRepositoryMongo(mongoClient, DB_GESTIONALE, PRODUCT_COLLECTION);
+		for (Product product : productRepository.findAllProducts()) {
+			productRepository.removeProduct(product);
 		}
 		GuiActionRunner.execute(() -> {
-			productViewSwing = new ProductViewSwing();
-			productController = new ProductController(productViewSwing, productRepositoryMongo);
-			productViewSwing.setProductController(productController);
-			return productViewSwing;
+			productView = new ProductViewSwing();
+			productController = new ProductController(productView, productRepository);
+			productView.setProductController(productController);
+			return productView;
 		});
-		window = new FrameFixture(robot(), productViewSwing);
+		window = new FrameFixture(robot(), productView);
 		window.show();
 	}
 	
@@ -83,8 +82,8 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 	public void testAllProducts() {
 		Product product1 = new Product(testProductName1, testProductQuantity1);
 		Product product2 = new Product(testProductName2, testProductQuantity2);
-		productRepositoryMongo.addProduct(product1);
-		productRepositoryMongo.addProduct(product2);
+		productRepository.addProduct(product1);
+		productRepository.addProduct(product2);
 		GuiActionRunner.execute(
 			() -> productController.allProducts()
 		);
@@ -95,8 +94,8 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 	public void testAddProductButtonWhenNoProductWithSameNameExists() {
 		window.textBox("nameTextBox").enterText(testProductName1);
 		window.textBox("quantityTextBox").enterText(String.valueOf(testProductQuantity1));
-		Product productToAdd = new Product(testProductName1, testProductQuantity1);
 		window.button("addProductButton").click();
+		Product productToAdd = new Product(testProductName1, testProductQuantity1);
 		assertThat(window.list("productList").contents()).containsExactly(productToAdd.toString());
 	}
 	
@@ -130,7 +129,7 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 	public void testRemoveProductButtonWhenProductDoesnNotExistInTheDatabase() {
 		Product productToRemove = new Product(testProductName1, testProductQuantity1);
 		GuiActionRunner.execute(
-			() -> productViewSwing.getListProductModel().addElement(productToRemove)
+			() -> productView.getListProductModel().addElement(productToRemove)
 		);
 		window.list("productList").selectItem(0);
 		window.button("removeProductButton").click();
@@ -152,6 +151,19 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 		assertThat(window.list("productList").contents()).containsExactly(productWithUpdatedName.toString());
 	}
 	
+	@Test
+	public void testEditProductButtonWhenQuantityIsSelectedShouldChangeProductQuantityInTheList() {
+		Product productToEdit = new Product(testProductName1, testProductQuantity1);
+		GuiActionRunner.execute(
+			() -> productController.addProduct(productToEdit)
+		);
+		window.list("productList").selectItem(0);
+		window.textBox("editPropertiesTextBox").enterText(String.valueOf(testProductQuantity2));
+		window.radioButton("quantityEditRadioButton").click();
+		window.button("editProductButton").click();
+		Product productWithUpdatedQuantity = new Product(testProductName1, testProductQuantity2);
+		assertThat(window.list("productList").contents()).containsExactly(productWithUpdatedQuantity.toString());
+	}
 	
 	
 	

@@ -32,7 +32,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	
 	private FrameFixture window;
 	
-	private ProductViewSwing productViewSwing;
+	private ProductViewSwing productView;
 	
 	@Mock
 	private ProductController productController;
@@ -41,11 +41,11 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	protected void onSetUp() {
 		MockitoAnnotations.initMocks(this);
 		GuiActionRunner.execute(() -> {
-			productViewSwing = new ProductViewSwing();
-			productViewSwing.setProductController(productController);
-			return productViewSwing;
+			productView = new ProductViewSwing();
+			productView.setProductController(productController);
+			return productView;
 		});
-		window = new FrameFixture(robot(), productViewSwing);
+		window = new FrameFixture(robot(), productView);
 		window.show();
 	}
 	
@@ -72,7 +72,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testAddProductButtonShouldBeEnabledWhenBothFieldsGetFilled() {
 		window.textBox("nameTextBox").enterText(testProductName1);
-		window.textBox("quantityTextBox").enterText("10");
+		window.textBox("quantityTextBox").enterText(String.valueOf(testProductQuantity1));
 		window.button(JButtonMatcher.withName("addProductButton")).requireEnabled();
 	}
 	
@@ -86,7 +86,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.textBox("quantityTextBox").setText("");
 		
 		window.textBox("nameTextBox").enterText(" ");
-		window.textBox("quantityTextBox").enterText("10");
+		window.textBox("quantityTextBox").enterText(String.valueOf(testProductQuantity1));
 		window.button(JButtonMatcher.withName("addProductButton")).requireDisabled();
 	}
 	
@@ -100,7 +100,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testRemoveProductButtonShouldBeEnabledWhenOneProductIsSelectedOnTheList() {
 		GuiActionRunner.execute(
-			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
+			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
 		);
 		window.list("productList").selectItem(0);
 		window.button(JButtonMatcher.withName("removeProductButton")).requireEnabled();
@@ -111,7 +111,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testRemoveProductButtonShouldBeDisabledWhenNoProductIsSelected() {
 		GuiActionRunner.execute(
-			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
+			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
 		);
 		window.button(JButtonMatcher.withName("removeProductButton")).requireDisabled();
 	}
@@ -119,7 +119,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testEditProductButtonShouldBeEnabledWhenOneProductIsSelectedAndEditFieldIsFilled() {
 		GuiActionRunner.execute(
-			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
+			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
 		);
 		window.list("productList").selectItem(0);
 		window.textBox("editPropertiesTextBox").enterText(testProductName2);
@@ -129,20 +129,20 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testEditProductButtonShouldBeEnabledWhenOneProductIsSelectedAndIntegerIsEntered() {
 		GuiActionRunner.execute(
-			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
+			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
 		);
 		window.list("productList").selectItem(0);
 		window.radioButton("quantityEditRadioButton").click();
-		window.textBox("editPropertiesTextBox").enterText("5");
+		window.textBox("editPropertiesTextBox").enterText(String.valueOf(testProductQuantity2));
 		window.button(JButtonMatcher.withName("editProductButton")).requireEnabled();
 	}
 	
 	@Test
 	public void testEditProductButtonShouldBeDisabledWhenFieldIsFilledButNoProductIsSelectedOrFieldIsEmpty() {
 		GuiActionRunner.execute(
-			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
+			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
 		);
-		window.textBox("editPropertiesTextBox").enterText("5");
+		window.textBox("editPropertiesTextBox").enterText(String.valueOf(testProductQuantity2));
 		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
 
 		window.list("productList").selectItem(0);
@@ -153,7 +153,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testEditProductButtonShouldBeDisabledWhenProductIsSelectedButQualityFieldContainsNonIntegerValue() {
 		GuiActionRunner.execute(
-			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
+			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
 		);
 		window.list("productList").selectItem(0);
 		window.radioButton("quantityEditRadioButton").click();
@@ -164,7 +164,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testEditProductButtonShouldBeDisabledWhenNameRadioIsSelectedButFieldIsEmptyOrNoProductIsSelected() {
 		GuiActionRunner.execute(
-			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
+			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
 		);
 		window.list("productList").selectItem(0);
 		window.radioButton("nameEditRadioButton").click();
@@ -180,7 +180,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		Product product1 = new Product(testProductName1, testProductQuantity1);
 		Product product2 = new Product(testProductName2, testProductQuantity2);
 		GuiActionRunner.execute(
-			() -> productViewSwing.listProducts(Arrays.asList(product1, product2))
+			() -> productView.listProducts(Arrays.asList(product1, product2))
 		);
 		String[] listProducts = window.list().contents();
 		assertThat(listProducts).containsExactly(product1.toString(), product2.toString());
@@ -190,7 +190,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testShowErrorShouldShowInfoOnTheDedicatedErrorLabel() {
 		Product product1 = new Product(testProductName1, testProductQuantity1);
 		GuiActionRunner.execute(
-			() -> productViewSwing.showError("Error message", product1, "error")
+			() -> productView.showError("Error message", product1, "error")
 		);
 		window.label("lblMessage").requireText("Error message: " + product1);
 	}
@@ -199,7 +199,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testShowErrorShowsInfoInRedIfMessageIsError() {
 		Product product1 = new Product(testProductName1, testProductQuantity1);
 		GuiActionRunner.execute(
-			() -> productViewSwing.showError("Error message", product1, "error")
+			() -> productView.showError("Error message", product1, "error")
 		);
 		window.label("lblMessage").requireText("Error message: " + product1);
 		window.label("lblMessage").foreground().requireEqualTo(Color.RED);
@@ -209,7 +209,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testShowErrorShowsInfoInBlackIfMessageIsInfo() {
 		Product product1 = new Product(testProductName1, testProductQuantity1);
 		GuiActionRunner.execute(
-			() -> productViewSwing.showError("Error message", product1, "info")
+			() -> productView.showError("Error message", product1, "info")
 		);
 		window.label("lblMessage").requireText("Error message: " + product1);
 		window.label("lblMessage").foreground().requireEqualTo(Color.BLACK);
@@ -219,7 +219,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testProductAddedShouldAddProductToTheListAndCleanupErrorMessage() {
 		Product product1 = new Product(testProductName1, testProductQuantity1);
 		GuiActionRunner.execute(
-			() -> productViewSwing.productAdded(product1)
+			() -> productView.productAdded(product1)
 		);
 		String[] listProducts = window.list().contents();
 		assertThat(listProducts).containsExactly(product1.toString());
@@ -232,13 +232,13 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		Product product2 = new Product(testProductName2, testProductQuantity2);
 		GuiActionRunner.execute(
 			() -> {
-				DefaultListModel<Product> listProductModel = productViewSwing.getListProductModel();
+				DefaultListModel<Product> listProductModel = productView.getListProductModel();
 				listProductModel.addElement(product1);
 				listProductModel.addElement(product2);
 			}
 		);
 		GuiActionRunner.execute(
-			() -> productViewSwing.productDeleted(product2)
+			() -> productView.productDeleted(product2)
 		);
 		String[] listProducts = window.list().contents();
 		assertThat(listProducts).containsExactly(product1.toString());
@@ -251,12 +251,12 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		Product product2 = new Product(testProductName2, testProductQuantity1);
 		GuiActionRunner.execute(
 			() -> {
-				DefaultListModel<Product> listProductModel = productViewSwing.getListProductModel();
+				DefaultListModel<Product> listProductModel = productView.getListProductModel();
 				listProductModel.addElement(product1);
 			}
 		);
 		GuiActionRunner.execute(
-			() -> productViewSwing.productEdited(product1, product2)
+			() -> productView.productEdited(product1, product2)
 		);
 		String[] listProducts = window.list().contents();
 		assertThat(listProducts).containsExactly(product2.toString());
@@ -268,7 +268,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testAddProductButtonShouldDelegateToControllerAddProduct() {
 		window.textBox("nameTextBox").enterText(testProductName1);
-		window.textBox("quantityTextBox").enterText("10");
+		window.textBox("quantityTextBox").enterText(String.valueOf(testProductQuantity1));
 		window.button("addProductButton").click();
 		verify(productController).addProduct(new Product(testProductName1, 10));
 	}
@@ -278,7 +278,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		Product product1 = new Product(testProductName1, testProductQuantity1);
 		GuiActionRunner.execute(
 			() -> {
-				DefaultListModel<Product> listProductModel = productViewSwing.getListProductModel();
+				DefaultListModel<Product> listProductModel = productView.getListProductModel();
 				listProductModel.addElement(product1);
 			}
 		);
