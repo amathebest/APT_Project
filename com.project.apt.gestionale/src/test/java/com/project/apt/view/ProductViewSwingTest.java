@@ -66,7 +66,6 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
 		window.label(JLabelMatcher.withName("lblInfoMessages"));
 		window.label(JLabelMatcher.withName("lblMessage"));
-		
 	}
 	
 	@Test
@@ -122,6 +121,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
 		);
 		window.list("productList").selectItem(0);
+		window.radioButton("nameEditRadioButton").click();
 		window.textBox("editPropertiesTextBox").enterText(testProductName2);
 		window.button(JButtonMatcher.withName("editProductButton")).requireEnabled();
 	}
@@ -142,11 +142,12 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(
 			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
 		);
-		window.textBox("editPropertiesTextBox").enterText(String.valueOf(testProductQuantity2));
+		window.radioButton("nameEditRadioButton").click();
+		window.textBox("editPropertiesTextBox").enterText(testProductName2);
 		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
 
-		window.list("productList").selectItem(0);
 		window.textBox("editPropertiesTextBox").setText("");
+		window.list("productList").selectItem(0);
 		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
 	}
 
@@ -270,7 +271,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.textBox("nameTextBox").enterText(testProductName1);
 		window.textBox("quantityTextBox").enterText(String.valueOf(testProductQuantity1));
 		window.button("addProductButton").click();
-		verify(productController).addProduct(new Product(testProductName1, 10));
+		verify(productController).addProduct(new Product(testProductName1, testProductQuantity1));
 	}
 	
 	@Test
@@ -285,5 +286,37 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.list("productList").selectItem(0);
 		window.button("removeProductButton").click();
 		verify(productController).removeProduct(product1);
+	}
+	
+	@Test
+	public void testEditProductButtonShouldDelegateToControllerAlterProductNameIfNameIsSelected() {
+		Product product1 = new Product(testProductName1, testProductQuantity1);
+		GuiActionRunner.execute(
+			() -> {
+				DefaultListModel<Product> listProductModel = productView.getListProductModel();
+				listProductModel.addElement(product1);
+			}
+		);
+		window.list("productList").selectItem(0);
+		window.radioButton("nameEditRadioButton").click();
+		window.textBox("editPropertiesTextBox").enterText(testProductName2);
+		window.button("editProductButton").click();
+		verify(productController).updateProductName(product1, testProductName2);
+	}
+	
+	@Test
+	public void testEditProductButtonShouldDelegateToControllerAlterProductQuantityIfQuantityIsSelected() {
+		Product product1 = new Product(testProductName1, testProductQuantity1);
+		GuiActionRunner.execute(
+			() -> {
+				DefaultListModel<Product> listProductModel = productView.getListProductModel();
+				listProductModel.addElement(product1);
+			}
+		);
+		window.list("productList").selectItem(0);
+		window.radioButton("quantityEditRadioButton").click();
+		window.textBox("editPropertiesTextBox").enterText(String.valueOf(testProductQuantity2));
+		window.button("editProductButton").click();
+		verify(productController).updateProductQuantity(product1, testProductQuantity2);
 	}
 }
