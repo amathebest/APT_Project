@@ -24,7 +24,8 @@ public class ProductControllerTest {
 	private static final String testProductName2 = "test2";
 	private static final int testProductQuantity1 = 10;
 	private static final int testProductQuantity2 = 5;
-	public static final String noProductFound = "No such product existing in the database.";
+	
+	public static final String noProductFound = "No such product existing in the database";
 	
 	@Mock
 	private ProductRepository productRepository;
@@ -75,9 +76,9 @@ public class ProductControllerTest {
 		when(productRepository.findByName(testProductName1)).thenReturn(existingProduct);
 		productController.addProduct(newProduct);
 		InOrder inOrder = inOrder(productRepository, productView);
-		inOrder.verify(productRepository).alterProductQuantity(existingProduct, testProductQuantity2);
+		inOrder.verify(productRepository).alterProductQuantity(existingProduct, existingProduct.getQuantity() + testProductQuantity2);
 		inOrder.verify(productView).productEdited(existingProduct, newProduct);
-		inOrder.verify(productView).showError("Product already present, updating quantity instead.", existingProduct, "info");
+		inOrder.verify(productView).showError("Product already present, updating quantity instead", existingProduct, "info");
 	}
 	
 	@Test

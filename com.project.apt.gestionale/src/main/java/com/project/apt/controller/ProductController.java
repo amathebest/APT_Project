@@ -6,7 +6,7 @@ import com.project.apt.view.ProductView;
 
 public class ProductController {
 	
-	private static final String noProductFound = "No such product existing in the database.";
+	private static final String noProductFound = "No such product existing in the database";
 	
 	private ProductView productView;
 	private ProductRepository productRepository;
@@ -23,9 +23,10 @@ public class ProductController {
 	public void addProduct(Product product) {
 		Product existingProduct = productRepository.findByName(product.getName());
 		if (existingProduct != null) {
-			productRepository.alterProductQuantity(existingProduct, product.getQuantity());
-			productView.productEdited(existingProduct, product);
-			productView.showError("Product already present, updating quantity instead.", existingProduct, "info");
+			productRepository.alterProductQuantity(existingProduct, existingProduct.getQuantity() + product.getQuantity());
+			Product updatedProduct = new Product(product.getName(), existingProduct.getQuantity() + product.getQuantity());
+			productView.productEdited(existingProduct, updatedProduct);
+			productView.showError("Product already present, updating quantity instead", updatedProduct, "info");
 			return;
 		}
 		productRepository.addProduct(product);
