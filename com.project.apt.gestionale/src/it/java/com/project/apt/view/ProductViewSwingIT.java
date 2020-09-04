@@ -144,7 +144,12 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(
 			() -> productController.addProduct(productToEdit)
 		);
-		
+		window.list("productList").selectItem(0);
+		window.textBox("editPropertiesTextBox").enterText(testProductName2);
+		window.radioButton("nameEditRadioButton").click();
+		window.button("editProductButton").click();
+		Product productWithUpdatedName = new Product(testProductName2, testProductQuantity1);
+		assertThat(window.list("productList").contents()).containsExactly(productWithUpdatedName.toString());
 	}
 	
 	

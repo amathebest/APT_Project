@@ -152,6 +152,17 @@ public class ProductViewSwing extends JFrame implements ProductView {
 			}
     	};
     	
+    	ActionListener editProductControllerDelegation = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (nameButton.isSelected()) {
+					productController.updateProductName(listProduct.getSelectedValue(), txtEditProductProperties.getText());
+				} else {
+					productController.updateProductQuantity(listProduct.getSelectedValue(), Integer.parseInt(txtEditProductProperties.getText()));
+				}
+			}
+    	};
+    	
     	// Components 
     	
     	JLabel lblAddNewProduct = new JLabel("Add new product");
@@ -236,6 +247,7 @@ public class ProductViewSwing extends JFrame implements ProductView {
 		editProductButton = new JButton("Edit");
 		editProductButton.setName("editProductButton");
 		editProductButton.setEnabled(false);
+		editProductButton.addActionListener(editProductControllerDelegation);
 		editSplit.add(editProductButton);
 		
 		content.add(editSplit, gbcEditSplit);
@@ -281,7 +293,7 @@ public class ProductViewSwing extends JFrame implements ProductView {
 
 	@Override
 	public void productEdited(Product productBefore, Product productAfter) {
-		listProductModel.setElementAt(productAfter, listProductModel.indexOf(productBefore));
+		listProductModel.set(listProductModel.indexOf(productBefore), productAfter);
 		lblMessage.setText(" ");
 	}
 
