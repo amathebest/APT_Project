@@ -138,24 +138,18 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 	}
 	
 	@Test
-	public void testEditProductButtonShouldBeDisabledWhenFieldIsFilledButNoProductIsSelected() {
+	public void testEditProductButtonShouldBeDisabledWhenFieldIsFilledButNoProductIsSelectedOrFieldIsEmpty() {
 		GuiActionRunner.execute(
 			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
 		);
 		window.textBox("editPropertiesTextBox").enterText("5");
 		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
-	}
-	
-	@Test
-	public void testEditProductButtonShouldBeDisabledWhenProductIsSelectedButFieldIsEmpty() {
-		GuiActionRunner.execute(
-			() -> productViewSwing.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
-		);
+
 		window.list("productList").selectItem(0);
 		window.textBox("editPropertiesTextBox").setText("");
 		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
 	}
-	
+
 	@Test
 	public void testEditProductButtonShouldBeDisabledWhenProductIsSelectedButQualityFieldContainsNonIntegerValue() {
 		GuiActionRunner.execute(

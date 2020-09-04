@@ -107,7 +107,7 @@
 			<groupId>de.bwaldvogel</groupId>
 			<artifactId>mongo-java-server</artifactId>
 			<version>${mongo.java.server.version}</version>
-			<scope>test</scope>
+			<!-- <scope>test</scope> -->
     	</dependency>
     	
     	<dependency>
@@ -186,7 +186,7 @@
 					<configuration>
 						<images>
 							<image>
-								<name>mongo:4.0.5</name>
+								<name>mongo:4.2.3</name>
 								<run>
 									<ports>
 										<port>27017:27017</port>
