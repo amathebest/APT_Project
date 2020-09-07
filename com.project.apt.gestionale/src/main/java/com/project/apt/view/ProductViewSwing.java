@@ -288,18 +288,15 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	@Override
 	public void productAdded(Product product) {
 		listProductModel.addElement(product);
-		lblMessage.setText(" ");
 	}
 
 	@Override
 	public void productEdited(Product productBefore, Product productAfter) {
 		listProductModel.set(listProductModel.indexOf(productBefore), productAfter);
-		lblMessage.setText(" ");
 	}
 
 	@Override
 	public void productDeleted(Product product) {
 		listProductModel.removeElement(product);
-		lblMessage.setText(" ");
 	}
 }

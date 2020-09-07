@@ -31,6 +31,7 @@ public class ProductController {
 		}
 		productRepository.addProduct(product);
 		productView.productAdded(product);
+		productView.showError("Product added", product, "info");
 	}
 	
 	public void removeProduct(Product product) {
@@ -41,6 +42,7 @@ public class ProductController {
 		}
 		productRepository.removeProduct(product);
 		productView.productDeleted(product);
+		productView.showError("Product removed", product, "info");
 	}
 	
 	public void updateProductName(Product product, String newName) {
@@ -49,7 +51,9 @@ public class ProductController {
 		if (existingProductOldName != null) {
 			if (existingProductNewName == null) {
 				productRepository.alterProductName(product, newName);
-				productView.productEdited(product, new Product(newName, product.getQuantity()));
+				Product updatedProduct = new Product(newName, product.getQuantity());
+				productView.productEdited(product, updatedProduct);
+				productView.showError("Changing product name", updatedProduct, "info");
 				return;
 			}
 			productView.showError("Database contains already a product with selected name", product, "error");
@@ -66,5 +70,7 @@ public class ProductController {
 		}
 		productRepository.alterProductQuantity(product, newQuantity);
 		productView.productEdited(product, new Product(product.getName(), newQuantity));
+		Product updatedProduct = new Product(product.getName(), newQuantity);
+		productView.showError("Changing product quantity", updatedProduct, "info");
 	}
 }
