@@ -26,7 +26,7 @@ public class ProductController {
 			productRepository.alterProductQuantity(existingProduct, existingProduct.getQuantity() + product.getQuantity());
 			Product updatedProduct = new Product(product.getName(), existingProduct.getQuantity() + product.getQuantity());
 			productView.productEdited(existingProduct, updatedProduct);
-			productView.showError("Product already present, updating quantity instead", updatedProduct, "info");
+			productView.showError("Updating quantity", updatedProduct, "info");
 			return;
 		}
 		productRepository.addProduct(product);

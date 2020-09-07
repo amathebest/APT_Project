@@ -277,7 +277,7 @@ public class ProductViewSwing extends JFrame implements ProductView {
 
 	@Override
 	public void showError(String message, Product product, String type) {
-		lblMessage.setText(message + ": " + product);
+		lblMessage.setText(message + ": " + product.getName());
 		if (type.contentEquals("error")) {
 			lblMessage.setForeground(Color.RED);
 		} else {

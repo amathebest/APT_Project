@@ -193,7 +193,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(
 			() -> productView.showError("Error message", product1, "error")
 		);
-		window.label("lblMessage").requireText("Error message: " + product1);
+		window.label("lblMessage").requireText("Error message: " + product1.getName());
 	}
 	
 	@Test
@@ -202,7 +202,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(
 			() -> productView.showError("Error message", product1, "error")
 		);
-		window.label("lblMessage").requireText("Error message: " + product1);
+		window.label("lblMessage").requireText("Error message: " + product1.getName());
 		window.label("lblMessage").foreground().requireEqualTo(Color.RED);
 	}
 	
@@ -212,7 +212,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(
 			() -> productView.showError("Error message", product1, "info")
 		);
-		window.label("lblMessage").requireText("Error message: " + product1);
+		window.label("lblMessage").requireText("Error message: " + product1.getName());
 		window.label("lblMessage").foreground().requireEqualTo(Color.BLACK);
 	}
 	

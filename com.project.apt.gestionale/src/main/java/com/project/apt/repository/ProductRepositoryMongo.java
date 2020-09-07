@@ -41,7 +41,6 @@ public class ProductRepositoryMongo implements ProductRepository {
 	@Override
 	public void removeProduct(Product product) {
 		productDocCollection.deleteOne(Filters.eq("name", product.getName()));
-		
 	}
 
 	@Override

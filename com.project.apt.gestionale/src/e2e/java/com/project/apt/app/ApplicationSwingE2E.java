@@ -179,5 +179,4 @@ public class ApplicationSwingE2E extends AssertJSwingJUnitTestCase {
 		String errorMessage = window.label("lblMessage").text();
 		assertThat(errorMessage).contains(productToUpdate.getName());
 	}
-	
 }

@@ -5,6 +5,9 @@ import com.mongodb.ServerAddress;
 
 import java.awt.EventQueue;
 import java.util.concurrent.Callable;
+
+import org.slf4j.LoggerFactory;
+
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -40,7 +43,7 @@ public class ApplicationSwing implements Callable <Void>{
 				productView.setVisible(true);
 				productController.allProducts();
 			} catch (Exception e) {
-				System.out.println(e);
+				LoggerFactory.getLogger(getClass()).error("Got an exception:", e);
 			}
 		});
 		return null;

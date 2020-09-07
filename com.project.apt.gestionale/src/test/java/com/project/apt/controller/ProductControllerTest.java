@@ -78,7 +78,7 @@ public class ProductControllerTest {
 		InOrder inOrder = inOrder(productRepository, productView);
 		inOrder.verify(productRepository).alterProductQuantity(existingProduct, existingProduct.getQuantity() + testProductQuantity2);
 		inOrder.verify(productView).productEdited(existingProduct, newProduct);
-		inOrder.verify(productView).showError("Product already present, updating quantity instead", existingProduct, "info");
+		inOrder.verify(productView).showError("Updating quantity", existingProduct, "info");
 	}
 	
 	@Test

@@ -110,7 +110,7 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 		window.button("addProductButton").click();
 		Product productWithUpdatedQuantity = new Product(testProductName1, testProductQuantity1 + testProductQuantity2);
 		assertThat(window.list("productList").contents()).containsExactly(productWithUpdatedQuantity.toString());
-		window.label("lblMessage").requireText("Product already present, updating quantity instead: " + productWithUpdatedQuantity);
+		window.label("lblMessage").requireText("Updating quantity: " + productWithUpdatedQuantity.getName());
 		window.label("lblMessage").foreground().requireEqualTo(Color.BLACK);
 	}
 	
@@ -133,7 +133,7 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 		);
 		window.list("productList").selectItem(0);
 		window.button("removeProductButton").click();
-		window.label("lblMessage").requireText("No such product existing in the database: " + productToRemove);
+		window.label("lblMessage").requireText("No such product existing in the database: " + productToRemove.getName());
 		window.label("lblMessage").foreground().requireEqualTo(Color.RED);
 	}
 	
@@ -175,20 +175,7 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 		window.textBox("editPropertiesTextBox").enterText(testProductName2);
 		window.radioButton("nameEditRadioButton").click();
 		window.button("editProductButton").click();
-		window.label("lblMessage").requireText("No such product existing in the database: " + productToEdit);
+		window.label("lblMessage").requireText("No such product existing in the database: " + productToEdit.getName());
 		window.label("lblMessage").foreground().requireEqualTo(Color.RED);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

@@ -41,6 +41,7 @@
 	    	**/app/ApplicationSwing.java
     	</sonar.coverage.exclusions>
     	
+    	<!-- Report paths -->
     	<sonar.junit.reportPaths>
 			${project.build.directory}/surefire-reports,
 			${project.build.directory}/failsafe-reports
@@ -82,21 +83,18 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
-			<!-- <scope>test</scope> -->
 		</dependency>
 		
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-swing-junit</artifactId>
 			<version>${assertj.swing.version}</version>
-			<!-- <scope>test</scope> -->
     	</dependency>
 	  	
 	  	<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>${mockito.version}</version>
-			<scope>test</scope>
     	</dependency>
     	
     	<!-- Database -->
@@ -110,7 +108,6 @@
 			<groupId>de.bwaldvogel</groupId>
 			<artifactId>mongo-java-server</artifactId>
 			<version>${mongo.java.server.version}</version>
-			<!-- <scope>test</scope> -->
     	</dependency>
     	
     	<dependency>
@@ -123,7 +120,6 @@
 			<groupId>org.testcontainers</groupId>
 			<artifactId>testcontainers</artifactId>
 			<version>${test.containers.version}</version>
-			<!-- <scope>test</scope> -->
 		</dependency>
 		
 		<!-- Misc -->
