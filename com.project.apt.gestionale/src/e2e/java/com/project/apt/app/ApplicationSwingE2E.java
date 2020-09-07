@@ -3,9 +3,13 @@ package com.project.apt.app;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.swing.launcher.ApplicationLauncher.*;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JFrame;
 
 import org.assertj.swing.core.GenericTypeMatcher;
+import org.assertj.swing.core.matcher.JButtonMatcher;
+import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
@@ -17,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.testcontainers.containers.GenericContainer;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.model.Filters;
 import com.project.apt.model.Product;
 
 @RunWith(GUITestRunner.class)
@@ -31,8 +36,10 @@ public class ApplicationSwingE2E extends AssertJSwingJUnitTestCase {
 
 	private static final String testProductName1 = "test1";
 	private static final String testProductName2 = "test2";
+	private static final String testProductName3 = "test3";
 	private static final int testProductQuantity1 = 10;
 	private static final int testProductQuantity2 = 5;
+	private static final int testProductQuantity3 = 15;
 	
 	private static final String DB_GESTIONALE = "gestionale";
 	private static final String PRODUCT_COLLECTION = "product";
@@ -70,17 +77,94 @@ public class ApplicationSwingE2E extends AssertJSwingJUnitTestCase {
 		client.getDatabase(DB_GESTIONALE).getCollection(PRODUCT_COLLECTION).insertOne(productDocument);
 	}
 	
+	protected void removeProductToDatabaseForTesting(String name) {
+		client.getDatabase(DB_GESTIONALE).getCollection(PRODUCT_COLLECTION).deleteOne(Filters.eq("name", name));
+	}
+	
 	@Test
 	public void testShowAllElementsOnDatabaseAtTheStartOfTheApplication() {
 		String[] listProducts = window.list().contents();
 		Product product1 = new Product(testProductName1, testProductQuantity1);
 		Product product2 = new Product(testProductName2, testProductQuantity2);
+		
 		assertThat(listProducts).contains(product1.toString());
 		assertThat(listProducts).contains(product2.toString());
 	}
 	
+	@Test
+	public void testAddProductButtonWhenNoProductWithSameNameIsPresent() {
+		Product productToAdd = new Product(testProductName3, testProductQuantity3);
+		
+		window.textBox("nameTextBox").enterText(productToAdd.getName());
+		window.textBox("quantityTextBox").enterText(String.valueOf(productToAdd.getQuantity()));
+		window.button("addProductButton").click();
+
+		String[] listProducts = window.list().contents();
+		assertThat(listProducts).contains(productToAdd.toString());
+	}
 	
+	@Test
+	public void testAddProductButtonWhenProductWithSameNameIsPresent() {
+		Product productToAdd = new Product(testProductName1, testProductQuantity3);
+		
+		window.textBox("nameTextBox").enterText(productToAdd.getName());
+		window.textBox("quantityTextBox").enterText(String.valueOf(productToAdd.getQuantity()));
+		window.button("addProductButton").click();
+		
+		String errorMessage = window.label("lblMessage").text();
+		assertThat(errorMessage).contains(productToAdd.getName());
+	}
 	
+	@Test
+	public void testRemoveProductButtonWhenProductSelectedExistsInDB() {
+		Product productToRemove = new Product(testProductName1, testProductQuantity1);
+		
+		window.list("productList").selectItem(Pattern.compile(".*" + testProductName1 + ".*"));
+		window.button("removeProductButton").click();
+		
+		String[] listProducts = window.list().contents();
+		assertThat(listProducts).doesNotContain(productToRemove.toString());
+	}
+	
+	@Test
+	public void testRemoveProductButtonWhenProductDoesNotExistInDB() {
+		Product productToRemove = new Product(testProductName1, testProductQuantity1);
+
+		window.list("productList").selectItem(Pattern.compile(".*" + testProductName1 + ".*"));
+		removeProductToDatabaseForTesting(productToRemove.getName());
+		window.button("removeProductButton").click();
+
+		String errorMessage = window.label("lblMessage").text();
+		assertThat(errorMessage).contains(productToRemove.getName());
+	}
+	
+	@Test
+	public void testEditProductButtonWhenNameIsSelectedProductIsSelectedAndFieldIsFilled() {
+		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
+
+		window.radioButton("nameEditRadioButton").click();
+		window.list("productList").selectItem(Pattern.compile(".*" + testProductName1 + ".*"));
+		window.textBox("editPropertiesTextBox").enterText(testProductName3);
+		window.button("editProductButton").click();
+		
+		Product updatedProduct = new Product(testProductName3, productToUpdate.getQuantity());
+		String[] listProducts = window.list().contents();
+		assertThat(listProducts).contains(updatedProduct.toString());
+	}
+	
+	@Test
+	public void testEditProductButtonWhenQuantityIsSelectedProductIsSelectedAndFieldIsFilledWithInteger() {
+		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
+
+		window.radioButton("quantityEditRadioButton").click();
+		window.list("productList").selectItem(Pattern.compile(".*" + testProductName1 + ".*"));
+		window.textBox("editPropertiesTextBox").enterText(String.valueOf(testProductQuantity3));
+		window.button("editProductButton").click();
+		
+		Product updatedProduct = new Product(productToUpdate.getName(), testProductQuantity3);
+		String[] listProducts = window.list().contents();
+		assertThat(listProducts).contains(updatedProduct.toString());
+	}
 	
 	
 	
