@@ -165,6 +165,20 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 		assertThat(window.list("productList").contents()).containsExactly(productWithUpdatedQuantity.toString());
 	}
 	
+	@Test
+	public void testEditProductButtonWhenProductDoesNotExistInTheDatabase() {
+		Product productToEdit = new Product(testProductName1, testProductQuantity1);
+		GuiActionRunner.execute(
+			() -> productView.getListProductModel().addElement(productToEdit)
+		);
+		window.list("productList").selectItem(0);
+		window.textBox("editPropertiesTextBox").enterText(testProductName2);
+		window.radioButton("nameEditRadioButton").click();
+		window.button("editProductButton").click();
+		window.label("lblMessage").requireText("No such product existing in the database: " + productToEdit);
+		window.label("lblMessage").foreground().requireEqualTo(Color.RED);
+	}
+	
 	
 	
 	

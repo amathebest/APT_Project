@@ -166,6 +166,18 @@ public class ApplicationSwingE2E extends AssertJSwingJUnitTestCase {
 		assertThat(listProducts).contains(updatedProduct.toString());
 	}
 	
-	
+	@Test
+	public void testEditProductButtonWhenProductDoesNotExistInDB() {
+		Product productToUpdate = new Product(testProductName1, testProductQuantity1);
+
+		window.list("productList").selectItem(Pattern.compile(".*" + testProductName1 + ".*"));
+		window.radioButton("nameEditRadioButton").click();
+		window.textBox("editPropertiesTextBox").enterText(testProductName3);
+		removeProductToDatabaseForTesting(productToUpdate.getName());
+		window.button("editProductButton").click();
+
+		String errorMessage = window.label("lblMessage").text();
+		assertThat(errorMessage).contains(productToUpdate.getName());
+	}
 	
 }
