@@ -21,6 +21,8 @@
     	<mongo.java.server.version>1.16.0</mongo.java.server.version>
     	<slf4f.version>1.7.21</slf4f.version>
     	<test.containers.version>1.10.5</test.containers.version>
+    	<picocli.version>3.9.6</picocli.version>
+    	
     	
 		
 		<!-- Plugins versions -->
@@ -58,8 +60,8 @@
 	    	java:S1192
 	    </sonar.issue.ignore.multicriteria.e12.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e12.resourceKey>
-	    	**/ProductController*.java
-	    	**/ProductRepositoryMongo*.java
+	    	**/ProductController.java
+	    	**/ProductRepositoryMongo.java
 	    </sonar.issue.ignore.multicriteria.e12.resourceKey>
 	    
 	    <!-- Excluding swing assertj code smell that doesn't detect swing verify methods -->
@@ -122,6 +124,13 @@
 			<version>${test.containers.version}</version>
 			<!-- <scope>test</scope> -->
 		</dependency>
+		
+		<!-- Misc -->
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>${picocli.version}</version>
+   	 	</dependency>
     	
 	</dependencies>
 
@@ -143,6 +152,7 @@
 							<configuration>
 								<sources>
 									<source>src/it/java</source>
+									<source>src/e2e/java</source>
 								</sources>
 							</configuration>
 						</execution>
