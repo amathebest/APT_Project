@@ -37,8 +37,8 @@
     	
     	<!-- Excluding some files from code coverage -->
     	<sonar.coverage.exclusions>
-			**/model/*
-	    	**/ApplicationSwing.java
+			**/model/*,
+	    	**/app/ApplicationSwing.java
     	</sonar.coverage.exclusions>
     	
     	<sonar.junit.reportPaths>
@@ -61,8 +61,8 @@
 	    	java:S1192
 	    </sonar.issue.ignore.multicriteria.e12.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e12.resourceKey>
-	    	**/controller/ProductController.java
-	    	**/repository/ProductRepositoryMongo.java
+	    	**/ProductController.java,
+	    	**/ProductRepositoryMongo.java
 	    </sonar.issue.ignore.multicriteria.e12.resourceKey>
 	    
 	    <!-- Excluding swing assertj code smell that doesn't detect swing verify methods -->
@@ -70,7 +70,7 @@
 	    	java:S2699
 	    </sonar.issue.ignore.multicriteria.e13.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e13.resourceKey>
-	    	**/view/ProductViewSwingTest.java
+	    	**/ProductViewSwingTest.java
 	    </sonar.issue.ignore.multicriteria.e13.resourceKey>
 	    
 	</properties>
