@@ -57,8 +57,8 @@ public class ProductRepositoryMongo implements ProductRepository {
 		productDocCollection.replaceOne(docToUpdate, docToReplace);
 	}
 	
-	private Product fromDocumentToProduct(Document d) {
-		return new Product("" + d.get("name"), (int) d.get("quantity"));
+	private Product fromDocumentToProduct(Document doc) {
+		return new Product("" + doc.get("name"), (int) doc.get("quantity"));
 	}
 
 }

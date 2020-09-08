@@ -47,7 +47,7 @@
 			${project.build.directory}/failsafe-reports
 	    </sonar.junit.reportPaths>
 	    
-	    <sonar.issue.ignore.multicriteria>e11,e12,e13</sonar.issue.ignore.multicriteria>
+	    <sonar.issue.ignore.multicriteria>e11,e12,e13,e14</sonar.issue.ignore.multicriteria>
 	    
 	    <!-- Disable rule for "Inheritance tree of classes should not be too deep" (we use inherit from Swing classes, whose inheritance is already deep) -->
 	    <sonar.issue.ignore.multicriteria.e11.ruleKey>
@@ -62,8 +62,8 @@
 	    	java:S1192
 	    </sonar.issue.ignore.multicriteria.e12.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e12.resourceKey>
-	    	**/controller/ProductController.java,
-	    	**/repository/ProductRepositoryMongo.java
+	    	**/ProductController.java,
+	    	**/ProductRepositoryMongo.java
 	    </sonar.issue.ignore.multicriteria.e12.resourceKey>
 	    
 	    <!-- Excluding swing assertj code smell that doesn't detect swing verify methods -->
@@ -71,8 +71,17 @@
 	    	java:S2699
 	    </sonar.issue.ignore.multicriteria.e13.ruleKey>
 	    <sonar.issue.ignore.multicriteria.e13.resourceKey>
-	    	**/view/ProductViewSwingTest.java
+	    	**/ProductViewSwingTest.java
 	    </sonar.issue.ignore.multicriteria.e13.resourceKey>
+	    
+	    <!-- Excluding lambdas conversion code smell, it doesn't affect code readability and it makes more sense in my head to have them as functions -->
+	    <sonar.issue.ignore.multicriteria.e14.ruleKey>
+	    	java:S1604
+	    </sonar.issue.ignore.multicriteria.e14.ruleKey>
+	    <sonar.issue.ignore.multicriteria.e14.resourceKey>
+	    	**/view/ProductViewSwing.java
+	    </sonar.issue.ignore.multicriteria.e14.resourceKey>
+	    
 	    
 	</properties>
 
