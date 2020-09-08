@@ -131,7 +131,6 @@ public class ProductViewSwing extends JFrame implements ProductView {
     		@Override
     		public void keyReleased(KeyEvent e) {
     			editProductButton.setEnabled(
-    				!txtEditProductProperties.getText().trim().isEmpty() && 
     				listProduct.getSelectedIndex() != -1 && 
     				((quantityButton.isSelected() && txtEditProductProperties.getText().matches("^[1-9][0-9]*")) || 
     				  nameButton.isSelected() && txtEditProductProperties.getText().matches("^[a-zA-Z]+[0-9]*"))

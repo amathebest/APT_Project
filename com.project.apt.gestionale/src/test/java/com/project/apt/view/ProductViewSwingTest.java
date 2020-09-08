@@ -157,11 +157,6 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
 	}
 	
-	
-	
-	
-	
-	
 	@Test
 	public void testEditProductButtonShouldBeEnabledWhenQuantityIsSelectedAndProductIsSelectedAndFieldIsFilledWithInteger() {
 		GuiActionRunner.execute(
@@ -204,52 +199,6 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
 	}
 	
-	
-	
-	
-	
-	
-	
-	/*
-	@Test
-	public void testEditProductButtonShouldBeDisabledWhenFieldIsFilledButNoProductIsSelectedOrFieldIsEmpty() {
-		GuiActionRunner.execute(
-			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
-		);
-		window.radioButton("nameEditRadioButton").click();
-		window.textBox("editPropertiesTextBox").enterText(testProductName2);
-		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
-
-		window.textBox("editPropertiesTextBox").setText("");
-		window.list("productList").selectItem(0);
-		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
-	}
-
-	@Test
-	public void testEditProductButtonShouldBeDisabledWhenProductIsSelectedButQualityFieldContainsNonIntegerValue() {
-		GuiActionRunner.execute(
-			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
-		);
-		window.list("productList").selectItem(0);
-		window.radioButton("quantityEditRadioButton").click();
-		window.textBox("editPropertiesTextBox").enterText("string");
-		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
-	}
-	
-	@Test
-	public void testEditProductButtonShouldBeDisabledWhenNameIsSelectedButFieldIsEmptyOrNoProductIsSelected() {
-		GuiActionRunner.execute(
-			() -> productView.getListProductModel().addElement(new Product(testProductName1, testProductQuantity1))
-		);
-		window.list("productList").selectItem(0);
-		window.radioButton("nameEditRadioButton").click();
-		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
-		
-		window.list("productList").clearSelection();
-		window.textBox("editPropertiesTextBox").enterText("string");
-		window.button(JButtonMatcher.withName("editProductButton")).requireDisabled();
-	}
-	*/
 	@Test
 	public void testListProductsShouldDisplayAllProductsInTheProductList() {
 		Product product1 = new Product(testProductName1, testProductQuantity1);
