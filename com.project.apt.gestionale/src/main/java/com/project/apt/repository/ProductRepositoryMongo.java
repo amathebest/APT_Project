@@ -1,6 +1,7 @@
 package com.project.apt.repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -30,7 +31,7 @@ public class ProductRepositoryMongo implements ProductRepository {
 	@Override
 	public Product findByName(String name) {
 		Document productDoc = productDocCollection.find(Filters.eq(NAME_KEY, name)).first();
-		if (productDoc != null) {
+		if (Objects.nonNull(productDoc)) {
 			return fromDocumentToProduct(productDoc);
 		}
 		return null;
