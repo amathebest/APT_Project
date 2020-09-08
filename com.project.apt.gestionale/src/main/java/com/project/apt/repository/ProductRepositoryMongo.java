@@ -14,7 +14,10 @@ import com.project.apt.model.Product;
 public class ProductRepositoryMongo implements ProductRepository {
 
 	private MongoCollection<Document> productDocCollection;
-
+	
+	private static final String NAME_KEY = "name";
+	private static final String QUANTITY_KEY = "quantity";
+	
 	public ProductRepositoryMongo(MongoClient client, String dbGestionale, String productCollection) {
 		productDocCollection = client.getDatabase(dbGestionale).getCollection(productCollection);
 	}
@@ -26,7 +29,7 @@ public class ProductRepositoryMongo implements ProductRepository {
 
 	@Override
 	public Product findByName(String name) {
-		Document productDoc = productDocCollection.find(Filters.eq("name", name)).first();
+		Document productDoc = productDocCollection.find(Filters.eq(NAME_KEY, name)).first();
 		if (productDoc != null) {
 			return fromDocumentToProduct(productDoc);
 		}
@@ -35,30 +38,30 @@ public class ProductRepositoryMongo implements ProductRepository {
 
 	@Override
 	public void addProduct(Product product) {
-		productDocCollection.insertOne(new Document().append("name", product.getName()).append("quantity", product.getQuantity()));
+		productDocCollection.insertOne(new Document().append(NAME_KEY, product.getName()).append(QUANTITY_KEY, product.getQuantity()));
 	}
 
 	@Override
 	public void removeProduct(Product product) {
-		productDocCollection.deleteOne(Filters.eq("name", product.getName()));
+		productDocCollection.deleteOne(Filters.eq(NAME_KEY, product.getName()));
 	}
 
 	@Override
 	public void alterProductName(Product product, String newName) {
-		Document docToUpdate = new Document().append("name", product.getName()).append("quantity", product.getQuantity());
-		Document docToReplace = new Document().append("name", newName).append("quantity", product.getQuantity());
+		Document docToUpdate = new Document().append(NAME_KEY, product.getName()).append(QUANTITY_KEY, product.getQuantity());
+		Document docToReplace = new Document().append(NAME_KEY, newName).append(QUANTITY_KEY, product.getQuantity());
 		productDocCollection.replaceOne(docToUpdate, docToReplace);
 	}
 
 	@Override
 	public void alterProductQuantity(Product product, int newQuantity) {
-		Document docToUpdate = new Document().append("name", product.getName()).append("quantity", product.getQuantity());
-		Document docToReplace = new Document().append("name", product.getName()).append("quantity", newQuantity);
+		Document docToUpdate = new Document().append(NAME_KEY, product.getName()).append(QUANTITY_KEY, product.getQuantity());
+		Document docToReplace = new Document().append(NAME_KEY, product.getName()).append(QUANTITY_KEY, newQuantity);
 		productDocCollection.replaceOne(docToUpdate, docToReplace);
 	}
 	
 	private Product fromDocumentToProduct(Document doc) {
-		return new Product("" + doc.get("name"), (int) doc.get("quantity"));
+		return new Product("" + doc.get(NAME_KEY), (int) doc.get(QUANTITY_KEY));
 	}
 
 }
