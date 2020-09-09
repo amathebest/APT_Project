@@ -267,17 +267,15 @@
 						<targetClasses>
 							<param>com.project.apt.controller.*</param>
 							<param>com.project.apt.repository.*</param>
-							<param>com.project.apt.view.*</param>
 						</targetClasses>
 						<targetTests>
 							<param>com.project.apt.controller.*</param>
 							<param>com.project.apt.repository.*</param>
-							<param>com.project.apt.view.ProductViewSwingTest.java</param>
 						</targetTests>
 						<mutators>
 							<mutator>DEFAULTS</mutator>
 						</mutators>
-						<mutationThreshold>90</mutationThreshold>
+						<mutationThreshold>100</mutationThreshold>
 					</configuration>
 				</plugin>
 			

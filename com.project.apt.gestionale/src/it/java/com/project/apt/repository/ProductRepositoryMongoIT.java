@@ -110,7 +110,4 @@ public class ProductRepositoryMongoIT {
 		productDocCollection.insertOne(new Document().append("name", name).append("quantity", quantity));
 		return new Product(name, quantity);
 	}
-	
-	
-	
 }

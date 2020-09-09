@@ -1,5 +1,7 @@
 package com.project.apt.controller;
 
+import static org.assertj.core.api.Assertions.*;
+
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
@@ -81,7 +83,7 @@ public class ProductControllerTest {
 		productController.addProduct(newProduct);
 		Product updatedProduct = new Product(testProductName1, testProductQuantity1 + testProductQuantity2);
 		InOrder inOrder = inOrder(productRepository, productView, productView);
-		inOrder.verify(productRepository).alterProductQuantity(existingProduct, existingProduct.getQuantity() + testProductQuantity2);
+		inOrder.verify(productRepository).alterProductQuantity(existingProduct, updatedProduct.getQuantity());
 		inOrder.verify(productView).productEdited(existingProduct, updatedProduct);
 		inOrder.verify(productView).showError("Updating quantity", updatedProduct, INFO_KEY);
 	}
