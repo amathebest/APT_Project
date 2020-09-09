@@ -24,7 +24,7 @@ public class ProductRepositoryMongoTest {
 	
 	private static final String testProductName1 = "test1";
 	private static final String testProductName2 = "test2";
-	private static final int testProductQuantity1 = 10;
+	private static final int testProductQuantity1 = 15;
 	private static final int testProductQuantity2 = 5;
 
 	private static MongoServer server;

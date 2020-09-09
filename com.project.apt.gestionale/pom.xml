@@ -121,8 +121,13 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4f.version}</version>
-			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+	        <groupId>org.slf4j</groupId>
+	        <artifactId>slf4j-simple</artifactId>
+	        <version>${slf4f.version}</version>
+   		</dependency>
 		
 		<dependency>
 			<groupId>org.testcontainers</groupId>
@@ -267,7 +272,7 @@
 						<targetTests>
 							<param>com.project.apt.controller.*</param>
 							<param>com.project.apt.repository.*</param>
-							<param>com.project.apt.view.*</param>
+							<param>com.project.apt.view.ProductViewSwingTest.java</param>
 						</targetTests>
 						<mutators>
 							<mutator>DEFAULTS</mutator>

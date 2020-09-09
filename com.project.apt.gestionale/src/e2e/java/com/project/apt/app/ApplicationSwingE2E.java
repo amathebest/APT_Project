@@ -37,9 +37,9 @@ public class ApplicationSwingE2E extends AssertJSwingJUnitTestCase {
 	private static final String testProductName1 = "test1";
 	private static final String testProductName2 = "test2";
 	private static final String testProductName3 = "test3";
-	private static final int testProductQuantity1 = 10;
+	private static final int testProductQuantity1 = 15;
 	private static final int testProductQuantity2 = 5;
-	private static final int testProductQuantity3 = 15;
+	private static final int testProductQuantity3 = 25;
 	
 	private static final String DB_GESTIONALE = "gestionale";
 	private static final String PRODUCT_COLLECTION = "product";

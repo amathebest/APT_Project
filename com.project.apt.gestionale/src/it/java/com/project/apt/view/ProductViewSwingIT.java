@@ -23,6 +23,7 @@ import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 import com.project.apt.controller.ProductController;
 import com.project.apt.model.Product;
 import com.project.apt.repository.ProductRepositoryMongo;
+import com.project.apt.view.ProductViewSwing;
 
 @RunWith(GUITestRunner.class)
 public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
@@ -39,7 +40,7 @@ public class ProductViewSwingIT extends AssertJSwingJUnitTestCase {
 	
 	private static final String testProductName1 = "test1";
 	private static final String testProductName2 = "test2";
-	private static final int testProductQuantity1 = 10;
+	private static final int testProductQuantity1 = 15;
 	private static final int testProductQuantity2 = 5;
 	
 	private static final String DB_GESTIONALE = "gestionale";
