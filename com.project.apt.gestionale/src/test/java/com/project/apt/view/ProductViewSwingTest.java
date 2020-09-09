@@ -248,6 +248,8 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		String[] listProducts = window.list().contents();
 		assertThat(listProducts).containsExactly(product1.toString());
 		window.label("lblMessage").requireText(" ");
+		window.textBox("nameTextBox").requireText("");
+		window.textBox("quantityTextBox").requireText("");
 	}
 	
 	@Test
@@ -285,6 +287,7 @@ public class ProductViewSwingTest extends AssertJSwingJUnitTestCase {
 		String[] listProducts = window.list().contents();
 		assertThat(listProducts).containsExactly(product2.toString());
 		window.label("lblMessage").requireText(" ");
+		window.textBox("editPropertiesTextBox").requireText("");
 	}
 	
 	// Controller delegation tests

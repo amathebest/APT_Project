@@ -22,19 +22,15 @@
     	<slf4f.version>1.7.21</slf4f.version>
     	<test.containers.version>1.10.5</test.containers.version>
     	<picocli.version>3.9.6</picocli.version>
-    	
-    	
 		
 		<!-- Plugins versions -->
 		<jacoco.version>0.8.4</jacoco.version>
 		<sonar.version>3.7.0.1746</sonar.version>
 		<maven.surfire.plugin.version>2.22.2</maven.surfire.plugin.version>
+		<pitest.version>1.4.10</pitest.version>
 		
-		
-		<sonar.coverage.jacoco.xmlReportPaths>
-      		${project.reporting.outputDirectory}/jacoco/jacoco.xml
-    	</sonar.coverage.jacoco.xmlReportPaths>
-    	
+		<!-- Sonar configurations -->
+	
     	<!-- Excluding some files from code coverage -->
     	<sonar.coverage.exclusions>
 			**/model/*,
@@ -45,8 +41,12 @@
     	<sonar.junit.reportPaths>
 			${project.build.directory}/surefire-reports,
 			${project.build.directory}/failsafe-reports
-	    </sonar.junit.reportPaths>
+	    </sonar.junit.reportPaths>	
 	    
+		<sonar.coverage.jacoco.xmlReportPaths>
+      		${project.reporting.outputDirectory}/jacoco/jacoco.xml
+    	</sonar.coverage.jacoco.xmlReportPaths>
+    	
 	    <sonar.issue.ignore.multicriteria>e11,e12,e13,e14</sonar.issue.ignore.multicriteria>
 	    
 	    <!-- Disable rule for "Inheritance tree of classes should not be too deep" (we use inherit from Swing classes, whose inheritance is already deep) -->
@@ -80,7 +80,6 @@
 	    <sonar.issue.ignore.multicriteria.e14.resourceKey>
 	    	**/ProductRepositoryMongo.java
 	    </sonar.issue.ignore.multicriteria.e14.resourceKey>
-	    
 	    
 	</properties>
 
@@ -120,8 +119,9 @@
     	
     	<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
+			<artifactId>slf4j-api</artifactId>
 			<version>${slf4f.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		
 		<dependency>
@@ -235,6 +235,7 @@
 					<configuration>
 					<excludes>
 						<exclude>**/model/*.*</exclude>
+						<exclude>**/app/ApplicationSwing.java</exclude>
 					</excludes>
 					</configuration>
 					<executions>
@@ -251,6 +252,28 @@
 					<groupId>org.sonarsource.scanner.maven</groupId>
 					<artifactId>sonar-maven-plugin</artifactId>
 					<version>${sonar.version}</version>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.pitest</groupId>
+					<artifactId>pitest-maven</artifactId>
+					<version>${pitest.version}</version>
+					<configuration>
+						<targetClasses>
+							<param>com.project.apt.controller.*</param>
+							<param>com.project.apt.repository.*</param>
+							<param>com.project.apt.view.*</param>
+						</targetClasses>
+						<targetTests>
+							<param>com.project.apt.controller.*</param>
+							<param>com.project.apt.repository.*</param>
+							<param>com.project.apt.view.*</param>
+						</targetTests>
+						<mutators>
+							<mutator>DEFAULTS</mutator>
+						</mutators>
+						<mutationThreshold>90</mutationThreshold>
+					</configuration>
 				</plugin>
 			
 			</plugins>
@@ -299,5 +322,29 @@
 				</plugins>
 			</build>
 		</profile>
+		
+		<profile>
+			<id>PIT</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>mutationCoverage</goal>
+								</goals>
+								<phase>verify</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
   	</profiles>
 </project>

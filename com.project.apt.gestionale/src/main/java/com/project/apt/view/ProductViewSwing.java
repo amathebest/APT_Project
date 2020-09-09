@@ -288,11 +288,14 @@ public class ProductViewSwing extends JFrame implements ProductView {
 	@Override
 	public void productAdded(Product product) {
 		listProductModel.addElement(product);
+		txtInsertProductName.setText("");
+		txtInsertProductQuantity.setText("");
 	}
 
 	@Override
 	public void productEdited(Product productBefore, Product productAfter) {
 		listProductModel.set(listProductModel.indexOf(productBefore), productAfter);
+		txtEditProductProperties.setText("");
 	}
 
 	@Override
