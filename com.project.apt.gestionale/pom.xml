@@ -26,7 +26,10 @@
 		<!-- Plugins versions -->
 		<jacoco.version>0.8.4</jacoco.version>
 		<sonar.version>3.7.0.1746</sonar.version>
+    	<build.helper.version>3.0.0</build.helper.version>
 		<maven.surfire.plugin.version>2.22.2</maven.surfire.plugin.version>
+		<failsafe.version>2.22.2</failsafe.version>
+    	<docker.frabric8.version>0.30.0</docker.frabric8.version>
 		<pitest.version>1.4.10</pitest.version>
 		
 		<!-- Sonar configurations -->
