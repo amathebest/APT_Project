@@ -21,10 +21,5 @@ cache:
     - $HOME/.m2
     - $HOME/.sonar/cache
 
-steps:
-  - uses: actions/checkout@v2
-    with:
-    fetch-depth: 0
-
 script:
   - mvn -f com.project.apt.gestionale/pom.xml clean verify -Pjacoco sonar:sonar
